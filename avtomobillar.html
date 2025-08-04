@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avtoexclusive - Avtomobillar</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="Avtoexclusive – avtomaktab avtomobillar ro'yxati.">
+    <meta name="keywords" content="avtoexclusive, avtomaktab, avtomobillar">
+    <meta name="author" content="Avtoexclusive" />
+    <link rel="icon" type="image/webp" href="/rasm1.webp">
+    <style>
+        /* Navigation Indicator Styles */
+        .nav-item {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .nav-item.active::before {
+            width: 80%;
+        }
+
+
+
+        .nav-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active {
+            color: #ff6b6b !important;
+            font-weight: 600;
+        }
+
+        .nav-item.active:hover {
+            color: #ee5a24 !important;
+        }
+
+        /* Mobile navigation indicators */
+        .mobile-menu .nav-item {
+            position: relative;
+            padding: 15px 20px;
+            margin: 5px 0;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu .nav-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            border-radius: 0 2px 2px 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .mobile-menu .nav-item.active::before {
+            opacity: 1;
+        }
+
+        .mobile-menu .nav-item.active {
+            background: rgba(255, 107, 107, 0.1);
+            color: #ff6b6b !important;
+            font-weight: 600;
+        }
+
+        .mobile-menu .nav-item::after {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <img src="rasm1.webp" alt="Avtoexclusive logo">
+            <span>Avtoexclusive</span>
+        </div>
+        <nav>
+            <a href="index.html" class="nav-item">Bosh sahifa</a>
+            <a href="avtomaktab.html" class="nav-item">Ariza qoldirish</a>
+            <a href="aloqa.html" class="nav-item">Aloqa</a>
+            <a href="admin.html" class="nav-item">Ma'lumotlar</a>
+            <a href="darslik.html" class="nav-item">Darslik</a>
+            <a href="https://maps.app.goo.gl/3vy3i4WX77W7WvLj7" class="nav-item">Xarita</a>
+        </nav>
+        <button class="mobile-menu-btn">☰</button>
+    </div>
+    <div class="mobile-menu">
+        <button class="close-btn">✕</button>
+        <a href="index.html" class="nav-item">Bosh sahifa</a>
+        <a href="avtomaktab.html" class="nav-item">Ariza qoldirish</a>
+        <a href="aloqa.html" class="nav-item">Aloqa</a>
+        <a href="admin.html" class="nav-item">Ma'lumotlar</a>
+        <a href="darslik.html" class="nav-item">Darslik</a>
+        <a href="https://maps.app.goo.gl/3vy3i4WX77W7WvLj7" class="nav-item">Xarita</a>
+    </div>
+    <div class="section">
+        <h2>🚘 Mavjud Avtomobillar Ro'yxati</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Model</th>
+                    <th>Yili</th>
+                    <th>Raqami</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- PHP yoki JS orqali avtomobillar ro'yxati shu yerda ko'rsatiladi -->
+            </tbody>
+        </table>
+    </div>
+    <div class="footer">
+        © 2025 Avtoexclusive. Barcha huquqlar himoyalangan.
+    </div>
+    <script>
+        // Mobile Menu
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const closeBtn = document.querySelector('.close-btn');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+        });
+        closeBtn.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+        });
+
+        function hideArizaAndMapForLoggedIn() {
+            const user = localStorage.getItem('avtoexclusive_user');
+            // Desktop menyu
+            const ariza = document.querySelector('nav a[href*="avtomaktab.html"]');
+            if (ariza) ariza.style.display = user ? 'none' : '';
+            const map = document.querySelector('nav a[href*="maps.app.goo.gl"]');
+            if (map) map.style.display = user ? 'none' : '';
+            // Mobil menyu
+            const mobileAriza = document.querySelector('.mobile-menu a[href*="avtomaktab.html"]');
+            if (mobileAriza) mobileAriza.style.display = user ? 'none' : '';
+            const mobileMap = document.querySelector('.mobile-menu a[href*="maps.app.goo.gl"]');
+            if (mobileMap) mobileMap.style.display = user ? 'none' : '';
+        }
+        function setActiveNavItem() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            document.querySelectorAll('.nav-item').forEach(item => {
+                const href = item.getAttribute('href');
+                if (href && href.indexOf(currentPage) !== -1) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+            hideArizaAndMapForLoggedIn();
+            setActiveNavItem();
+        });
+    </script>
+</body>
+</html>

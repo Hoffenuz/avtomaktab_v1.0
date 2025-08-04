@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avtoexclusive - Ariza qoldirish</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="Avtoexclusive – avtomaktab arizasi qoldirish.">
+    <meta name="keywords" content="avtoexclusive, avtomaktab, ariza, ro'yxatdan o'tish">
+    <meta name="author" content="Avtoexclusive" />
+    <link rel="icon" type="image/webp" href="/rasm1.webp">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="auth.js"></script>
+    <style>
+        .ariza-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .ariza-form {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-header h1 {
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .form-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .phone-input-container {
+            display: flex;
+            align-items: center;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .phone-input-container:focus-within {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .phone-prefix {
+            background: #f8f9fa;
+            padding: 15px 12px;
+            color: #666;
+            font-weight: 600;
+            border-right: 1px solid #e1e5e9;
+            font-size: 16px;
+        }
+
+        .phone-input-container input {
+            border: none;
+            border-radius: 0;
+            flex: 1;
+        }
+
+        .phone-input-container input:focus {
+            box-shadow: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .success-message {
+            background: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            display: none;
+        }
+
+        .error-message {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            display: none;
+        }
+
+        .loading {
+            display: none;
+        }
+
+        .loading.show {
+            display: inline-block;
+        }
+
+        .required-field::after {
+            content: ' *';
+            color: #dc3545;
+        }
+
+        @media (max-width: 768px) {
+            .ariza-container {
+                margin: 20px auto;
+                padding: 10px;
+            }
+
+            .ariza-form {
+                padding: 30px 20px;
+            }
+
+            .form-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <img src="rasm1.webp" alt="Avtoexclusive logo">
+            <span>Avtoexclusive</span>
+        </div>
+        <nav>
+            <a href="index.html" class="nav-item">Bosh sahifa</a>
+            <a href="avtomaktab.html" class="nav-item active" id="arizaLink" style="display: block;">Ariza qoldirish</a>
+            <a href="aloqa.html" class="nav-item">Aloqa</a>
+            <a href="admin.html" class="nav-item" id="adminLink" onclick="return window.authManager.requireLogin()">Ma'lumotlar</a>
+            <a href="darslik.html" class="nav-item">Darslik</a>
+            <a href="https://maps.app.goo.gl/3vy3i4WX77W7WvLj7" class="nav-item">Xarita</a>
+        </nav>
+        <button class="mobile-menu-btn">☰</button>
+    </div>
+
+    <div class="mobile-menu">
+        <button class="close-btn">✕</button>
+        <a href="index.html" class="nav-item">Bosh sahifa</a>
+        <a href="avtomaktab.html" class="nav-item active" id="mobileArizaLink" style="display: block;">Ariza qoldirish</a>
+        <a href="aloqa.html" class="nav-item">Aloqa</a>
+        <a href="admin.html" class="nav-item">Ma'lumotlar</a>
+        <a href="darslik.html" class="nav-item">Darslik</a>
+        <a href="https://maps.app.goo.gl/3vy3i4WX77W7WvLj7" class="nav-item">Xarita</a>
+    </div>
+
+    <div class="ariza-container">
+        <div class="ariza-form">
+            <div class="form-header">
+                <h1>Ariza qoldirish</h1>
+                <p>Avtomaktabga topshirish uchun arizangizni qoldiring, iltimos ortiqcha so'rovlar yubormang</p>
+            </div>
+
+            <form id="arizaForm">
+                <div class="form-group">
+                    <label for="fio" class="required-field">Ism va Familiya</label>
+                    <input type="text" id="fio" name="fio" placeholder="Umidov Umid" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone" class="required-field">Telefon raqam</label>
+                    <div class="phone-input-container">
+                        <span class="phone-prefix">+998</span>
+                        <input type="tel" id="phone" name="phone" placeholder="901234567" maxlength="9" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="address" class="required-field">Manzil</label>
+                    <input type="text" id="address" name="address" placeholder="Xorazm viloyati, Qo'shko'pir tumani" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="birthDate" class="required-field">Tug'ilgan sana</label>
+                    <input type="text" id="birthDate" name="birthDate" placeholder="09-05-2005" maxlength="10" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Qo'shimcha ma'lumot</label>
+                    <textarea id="message" name="message" placeholder="O'zingiz haqida qo'shimcha ma'lumot, tajriba yoki savollaringiz..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <span class="btn-text">Arizani yuborish</span>
+                    <span class="loading">
+                        <i class="fas fa-spinner fa-spin"></i> Yuborilmoqda...
+                    </span>
+                </button>
+            </form>
+
+            <div id="successMessage" class="success-message">
+                <i class="fas fa-check-circle"></i>
+                <p>Arizangiz muvaffaqiyatli yuborildi! Tez orada siz bilan bog'lanamiz.</p>
+            </div>
+
+            <div id="errorMessage" class="error-message">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>Xatolik yuz berdi. Iltimos, qaytadan urinib ko'ring.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        © 2025 Avtoexclusive. Barcha huquqlar himoyalangan.
+    </div>
+
+    <script>
+        // Supabase konfiguratsiyasi
+        const SUPABASE_URL = 'https://oietcsgsbklgqjatefxt.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9pZXRjc2dzYmtsZ3FqYXRlZnh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg3MTg5NTAsImV4cCI6MjA2NDI5NDk1MH0.I_1HUJSBjclNsNNI69yr133UD-VZZCdAoMpLCBQb_ns';
+        
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Modal xabar uchun HTML qo'shaman
+        document.body.insertAdjacentHTML('beforeend', `
+          <div id="modalMessage" style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.35);align-items:center;justify-content:center;">
+            <div style="background:#fff;padding:32px 28px;border-radius:18px;box-shadow:0 8px 32px rgba(78,84,200,0.18);text-align:center;max-width:350px;width:90%;margin:auto;">
+              <div style="font-size:2.5rem;color:#4e54c8;margin-bottom:10px;">✅</div>
+              <div id="modalMessageText" style="font-size:1.15rem;color:#333;margin-bottom:18px;">Xabaringiz yuborildi, tez orada admin siz bilan bog'lanadi!</div>
+              <button onclick="document.getElementById('modalMessage').style.display='none'" style="padding:10px 28px;background:#4e54c8;color:#fff;border:none;border-radius:8px;font-size:1rem;cursor:pointer;">Yopish</button>
+            </div>
+          </div>
+        `);
+
+        function showModalMessage(text) {
+          const modal = document.getElementById('modalMessage');
+          document.getElementById('modalMessageText').textContent = text;
+          modal.style.display = 'flex';
+        }
+
+        // Mobile menu
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const closeBtn = document.querySelector('.close-btn');
+        const mobileMenu = document.querySelector('.mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+        });
+
+        // Telefon raqamini formatlash
+        document.getElementById('phone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 9) {
+                value = value.substring(0, 9);
+            }
+            e.target.value = value;
+        });
+
+        // Sana formatini avtomatik qo'shish
+        document.getElementById('birthDate').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '-' + value.substring(2);
+            }
+            if (value.length >= 5) {
+                value = value.substring(0, 5) + '-' + value.substring(5, 9);
+            }
+            
+            e.target.value = value.substring(0, 10);
+        });
+
+        // Ariza formasi
+        document.getElementById('arizaForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText = submitBtn.querySelector('.btn-text');
+            const loading = submitBtn.querySelector('.loading');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Xatolarni tozalash
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            
+            // Forma ma'lumotlarini olish
+            const fio = document.getElementById('fio').value.trim();
+            const telefon = '+998' + document.getElementById('phone').value;
+            const manzil = document.getElementById('address').value.trim();
+            const tugilgan_sana = document.getElementById('birthDate').value.trim();
+            const xabar = document.getElementById('message').value.trim();
+            
+            // Validatsiya
+            if (!fio || !telefon || !manzil || !tugilgan_sana) {
+                errorMessage.querySelector('p').textContent = 'Iltimos, barcha majburiy maydonlarni to\'ldiring.';
+                errorMessage.style.display = 'block';
+                return;
+            }
+            
+            // Loading holatini ko'rsatish
+            submitBtn.disabled = true;
+            btnText.style.display = 'none';
+            loading.classList.add('show');
+            
+            try {
+                // Faqat bitta so'rov - barcha ustunlar bilan
+                const { error } = await supabase
+                    .from('aloqa')
+                    .insert([{
+                        ism: fio,
+                        telefon,
+                        xabar,
+                        manzil,
+                        tugilgan_sana
+                    }]);
+                if (error) throw error;
+                // Muvaffaqiyatli xabar
+                successMessage.style.display = 'block';
+                document.getElementById('arizaForm').reset();
+                setTimeout(() => { successMessage.style.display = 'none'; }, 3000);
+                showModalMessage('Xabaringiz yuborildi, tez orada admin siz bilan bog\'lanadi!');
+            } catch (error) {
+                console.error('Ariza yuborish xatosi:', error);
+                errorMessage.querySelector('p').textContent = 'Xatolik yuz berdi. Iltimos, qaytadan urinib ko\'ring.';
+                errorMessage.style.display = 'block';
+            } finally {
+                submitBtn.disabled = false;
+                btnText.style.display = 'inline';
+                loading.classList.remove('show');
+            }
+        });
+
+        // Login statusni tekshirish va menyuni boshqarish
+        function hideArizaAndMapForLoggedIn() {
+          const user = localStorage.getItem('avtoexclusive_user');
+          // Desktop menyu
+          document.getElementById('arizaLink').style.display = user ? 'none' : 'block';
+          const mapLink = document.querySelector('nav a[href*="maps.app.goo.gl"]');
+          if (mapLink) mapLink.style.display = user ? 'none' : 'block';
+          // Mobil menyu
+          const mobileAriza = document.getElementById('mobileArizaLink');
+          if (mobileAriza) mobileAriza.style.display = user ? 'none' : 'block';
+          const mobileMap = document.querySelector('.mobile-menu a[href*="maps.app.goo.gl"]');
+          if (mobileMap) mobileMap.style.display = user ? 'none' : 'block';
+        }
+
+        // Qaysi bo'limda turganini ko'rsatish (active nav-item)
+        function setActiveNavItem() {
+          const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+          document.querySelectorAll('.nav-item').forEach(item => {
+            const href = item.getAttribute('href');
+            if (href && href.indexOf(currentPage) !== -1) {
+              item.classList.add('active');
+            } else {
+              item.classList.remove('active');
+            }
+          });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+          hideArizaAndMapForLoggedIn();
+          setActiveNavItem();
+        });
+    </script>
+</body>
+</html> 

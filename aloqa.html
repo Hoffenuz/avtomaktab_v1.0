@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avtoexclusive - Aloqa</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="Avtoexclusive – biz bilan bog'laning va savollaringizga javob oling.">
+    <meta name="keywords" content="avtoexclusive, aloqa, bog'lanish, avtomaktab">
+    <meta name="author" content="Avtoexclusive" />
+    <link rel="icon" type="image/webp" href="/rasm1.webp">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .contact-section {
+            padding: 40px 0;
+            background: #f8f9fa;
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .contact-info {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 1px solid #e9ecef;
+        }
+        
+        .contact-info h3 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            transition: background-color 0.2s ease;
+        }
+        
+        .contact-item:hover {
+            background-color: #e9ecef;
+        }
+        
+        .contact-item i {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 0.9rem;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .contact-item span {
+            color: #333;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        
+        .contact-form {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 1px solid #e9ecef;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .contact-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .contact-form h3 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-align: left;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #fafafa;
+            box-sizing: border-box;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+            font-family: inherit;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .social-section {
+            padding: 40px 0;
+            background: white;
+        }
+        
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .social-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .social-card:hover {
+            transform: translateY(-3px);
+        }
+        
+        .social-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+            color: #ffd700;
+        }
+        
+        .social-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .social-card p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            margin-bottom: 12px;
+        }
+        
+        .social-link {
+            display: inline-block;
+            padding: 6px 15px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: background 0.3s ease;
+        }
+        
+        .social-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .contact-info,
+            .contact-form {
+                padding: 20px;
+            }
+            
+            .social-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .contact-item {
+                padding: 6px 10px;
+            }
+            
+            .contact-item i {
+                width: 25px;
+                height: 25px;
+                font-size: 0.8rem;
+                margin-right: 10px;
+            }
+            
+            .contact-item span {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Navigation Indicator Styles */
+        .nav-item {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .nav-item.active::before {
+            width: 80%;
+        }
+
+
+
+        .nav-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active {
+            color: #ff6b6b !important;
+            font-weight: 600;
+        }
+
+        .nav-item.active:hover {
+            color: #ee5a24 !important;
+        }
+
+        /* Mobile navigation indicators */
+        .mobile-menu .nav-item {
+            position: relative;
+            padding: 15px 20px;
+            margin: 5px 0;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu .nav-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            border-radius: 0 2px 2px 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .mobile-menu .nav-item.active::before {
+            opacity: 1;
+        }
+
+        .mobile-menu .nav-item.active {
+            background: rgba(255, 107, 107, 0.1);
+            color: #ff6b6b !important;
+            font-weight: 600;
+        }
+
+        .mobile-menu .nav-item::after {
+            display: none;
+        }
+        .user-name {
+          font-weight: 600;
+          color: #fff !important;
+          font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <img src="rasm1.webp" alt="Avtoexclusive logo">
+            <span>Avtoexclusive</span>
+        </div>
+        <nav>
+            <a href="index.html" class="nav-item">Bosh sahifa</a>
+                    <a href="avtomaktab.html" class="nav-item">Ariza qoldirish</a>
+            <a href="aloqa.html" class="nav-item active">Aloqa</a>
+            <a href="admin.html" class="nav-item">Ma'lumotlar</a>
+            <a href="darslik.html" class="nav-item">Darslik</a>
+            <a href="https://maps.app.goo.gl/3vy3i4WX77W7WvLj7" class="nav-item">Xarita</a>
+        </nav>
+        <button class="mobile-menu-btn">☰</button>
+    </div>
+    
+    <div class="mobile-menu">
+        <button class="close-btn">✕</button>
+        <a href="index.html" class="nav-item">Bosh sahifa</a>
+        <a href="avtomaktab.html" class="nav-item">Ariza qoldirish</a>
+        <a href="aloqa.html" class="nav-item active">Aloqa</a>
+        <a href="admin.html" class="nav-item">Ma'lumotlar</a>
+        <a href="darslik.html" class="nav-item">Darslik</a>
+        <a href="https://maps.app.goo.gl/3vy3i4WX77W7WvLj7" class="nav-item">Xarita</a>
+    </div>
+
+    <div class="contact-section">
+        <div class="section">
+            <h2>Aloqa Ma'lumotlari</h2>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h3>📋 Bizning Ma'lumotlar</h3>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Urganch sh., AL Xorazmiy ko'chasi 111/2-uy</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+998 99 065 62 00</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+998 97 516 62 00</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <span>info@avtoexclusive.uz</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <span>Dushanba - Shanba: 09:00 - 18:00</span>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <h3>📝 Xabar Yozing</h3>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Ismingiz *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Telefon raqam *</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Mavzu</label>
+                            <input type="text" id="subject" name="subject" placeholder="Mavzuni yozing...">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Xabar *</label>
+                            <textarea id="message" name="message" placeholder="Xabaringizni yozing..." required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-paper-plane"></i> Yuborish
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="social-section">
+        <div class="section">
+            <h2>🌐 Ijtimoiy Tarmoqlar</h2>
+            <div class="social-grid">
+                <div class="social-card">
+                    <i class="fab fa-telegram social-icon"></i>
+                    <h4>Telegram</h4>
+                    <p>Eng tezkor aloqa uchun</p>
+                    <a href="#" class="social-link">Qo'shilish</a>
+                </div>
+                <div class="social-card">
+                    <i class="fab fa-instagram social-icon"></i>
+                    <h4>Instagram</h4>
+                    <p>Fotolar va videolar</p>
+                    <a href="#" class="social-link">Kuzatish</a>
+                </div>
+                <div class="social-card">
+                    <i class="fab fa-facebook social-icon"></i>
+                    <h4>Facebook</h4>
+                    <p>Yangiliklar va tadbirlar</p>
+                    <a href="#" class="social-link">Sahifaga o'tish</a>
+                </div>
+                <div class="social-card">
+                    <i class="fab fa-youtube social-icon"></i>
+                    <h4>YouTube</h4>
+                    <p>Darsliklar va ko'rsatmalar</p>
+                    <a href="#" class="social-link">Kanalga o'tish</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        © 2025 Avtoexclusive. Barcha huquqlar himoyalangan.
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Modal xabar uchun HTML qo'shaman
+        document.body.insertAdjacentHTML('beforeend', `
+          <div id="modalMessage" style="display:none;position:fixed;z-index:9999;left:0;top:0;width:100vw;height:100vh;background:linear-gradient(135deg,rgba(0,0,0,0.8),rgba(0,0,0,0.6));backdrop-filter:blur(15px);align-items:center;justify-content:center;animation:modalFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);">
+            <div style="background:linear-gradient(145deg,#ffffff,#f8fafc);padding:50px 40px;border-radius:30px;box-shadow:0 25px 80px rgba(0,0,0,0.25),0 0 0 1px rgba(255,255,255,0.1);text-align:center;max-width:450px;width:90%;margin:auto;transform:scale(0.8) translateY(30px);animation:modalSlideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;position:relative;overflow:hidden;">
+              <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#667eea,#764ba2,#f093fb,#f5576c);"></div>
+              <div style="width:100px;height:100px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 30px;box-shadow:0 15px 40px rgba(102,126,234,0.4);animation:successPulse 2s ease-in-out infinite;position:relative;">
+                <div style="font-size:3rem;color:#fff;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2));">💻</div>
+                <div style="position:absolute;top:-5px;right:-5px;width:30px;height:30px;background:linear-gradient(135deg,#4CAF50,#45a049);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(76,175,80,0.4);">
+                  <div style="font-size:1rem;color:#fff;">✓</div>
+                </div>
+              </div>
+              <div id="modalMessageText" style="font-size:1.5rem;color:#2d3748;margin-bottom:15px;font-weight:700;line-height:1.3;letter-spacing:-0.5px;">Muvaffaqiyatli yuborildi!</div>
+              <p style="color:#718096;font-size:1.1rem;margin-bottom:35px;line-height:1.6;font-weight:500;">Xabaringiz qabul qilindi. Tez orada siz bilan bog'lanamiz! </p>
+              <button onclick="document.getElementById('modalMessage').style.display='none'" style="padding:18px 40px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;border:none;border-radius:15px;font-size:1.1rem;font-weight:600;cursor:pointer;transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1);box-shadow:0 10px 30px rgba(102,126,234,0.4);position:relative;overflow:hidden;font-family:inherit;">
+                <span style="position:relative;z-index:2;">Davom etish</span>
+                <div style="position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);transition:left 0.5s;"></div>
+              </button>
+            </div>
+          </div>
+          <style>
+            @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
+            @keyframes modalSlideIn { from { transform: scale(0.8) translateY(30px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+            @keyframes successPulse { 0%, 100% { transform: scale(1); box-shadow: 0 15px 40px rgba(102,126,234,0.4); } 50% { transform: scale(1.05); box-shadow: 0 20px 50px rgba(102,126,234,0.6); } }
+            #modalMessage button:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(102,126,234,0.6); }
+            #modalMessage button:hover div { left: 100%; }
+          </style>
+        `);
+
+        function showModalMessage(text) {
+          const modal = document.getElementById('modalMessage');
+          document.getElementById('modalMessageText').textContent = text;
+          modal.style.display = 'flex';
+        }
+
+        // Contact form handling
+        const supabaseUrl = 'https://oietcsgsbklgqjatefxt.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9pZXRjc2dzYmtsZ3FqYXRlZnh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg3MTg5NTAsImV4cCI6MjA2NDI5NDk1MH0.I_1HUJSBjclNsNNI69yr133UD-VZZCdAoMpLCBQb_ns';
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const fio = formData.get('name');
+            const phone = formData.get('phone');
+            const mavzu = formData.get('subject') || 'Boshqa'; // Agar mavzu bo'sh bo'lsa
+            const xabar = formData.get('message');
+            
+            try {
+                // Supabase'ga yuborish
+                const { data, error } = await supabase
+                    .from('xabar')
+                    .insert([{ 
+                        fio: fio, 
+                        phone: phone, 
+                        mavzu: mavzu, 
+                        xabar: xabar 
+                    }]);
+                
+                if (error) {
+                    console.error('Supabase error:', error);
+                    showModalMessage('❌ Xabar yuborishda xatolik: ' + error.message);
+                } else {
+                    showModalMessage('✅ Xabaringiz yuborildi!');
+                    this.reset();
+                }
+            } catch (err) {
+                console.error('Network error:', err);
+                showModalMessage('❌ Tarmoq xatoligi. Iltimos, qaytadan urinib ko\'ring.');
+            }
+        });
+
+        // Mobile Menu
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const closeBtn = document.querySelector('.close-btn');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+        });
+        
+        closeBtn.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+          function hideArizaAndMapForLoggedIn() {
+            const user = localStorage.getItem('avtoexclusive_user');
+            // Desktop menyu
+            const ariza = document.querySelector('nav a[href*="avtomaktab.html"]');
+            if (ariza) ariza.style.display = user ? 'none' : '';
+            const map = document.querySelector('nav a[href*="maps.app.goo.gl"]');
+            if (map) map.style.display = user ? 'none' : '';
+            // Mobil menyu
+            const mobileAriza = document.querySelector('.mobile-menu a[href*="avtomaktab.html"]');
+            if (mobileAriza) mobileAriza.style.display = user ? 'none' : '';
+            const mobileMap = document.querySelector('.mobile-menu a[href*="maps.app.goo.gl"]');
+            if (mobileMap) mobileMap.style.display = user ? 'none' : '';
+            // Profil har doim ko'rinsin
+            const userProfile = document.getElementById('userProfile');
+            if (userProfile) userProfile.style.display = 'flex';
+            const mobileUserProfile = document.getElementById('mobileUserProfile');
+            if (mobileUserProfile) mobileUserProfile.style.display = 'block';
+          }
+          function setActiveNavItem() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            document.querySelectorAll('.nav-item').forEach(item => {
+              const href = item.getAttribute('href');
+              if (href && href.indexOf(currentPage) !== -1) {
+                item.classList.add('active');
+              } else {
+                item.classList.remove('active');
+              }
+            });
+          }
+          hideArizaAndMapForLoggedIn();
+          setActiveNavItem();
+        });
+    </script>
+</body>
+</html>

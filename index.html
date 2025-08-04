@@ -1,0 +1,2156 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avtoexclusive - Avtomaktab</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="Avtoexclusive – haydovchilik guvohnomasini olish uchun YHQ testlari, Avtomaktab imtihonlari va onlayn testlar bazasi.">
+    <meta name="keywords" content="avtoexclusive, avtotest, avtomaktab, prava test, YHQ testlari, haydovchilik testi">
+    <meta name="author" content="Avtoexclusive" />
+    <meta name="yandex-verification" content="f2d63f167a48024f" />
+    <link rel="icon" type="image/webp" href="/rasm1.webp">
+    <meta property="og:image" content="https://www.maktabavto.uz/rasm1.webp">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('background1.webp') center center/cover no-repeat;
+            opacity: 0.3;
+            z-index: 1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            background: rgba(26,35,126,0.8);
+            border-radius: 20px;
+            padding: 40px 30px;
+            display: inline-block;
+            backdrop-filter: blur(10px);
+        }
+        
+        .hero-content h1 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .hero-content p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+        
+        .cta-btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 107, 107, 0.4);
+        }
+
+        /* Test button for logged in users */
+        .cta-btn.logged-in {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+        }
+
+        .cta-btn.logged-in:hover {
+            box-shadow: 0 12px 35px rgba(40, 167, 69, 0.4);
+        }
+        
+        .features-section {
+            padding: 60px 0;
+            background: #f8f9fa;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .feature-card i {
+            font-size: 3rem;
+            color: #1976d2;
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+        
+        .video-section {
+            padding: 40px 0;
+            background: white;
+        }
+        
+        .video-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .video-header {
+            background: linear-gradient(135deg, #1a237e 0%, #1976d2 100%);
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .video-header h2 {
+            font-size: 1.3rem;
+            margin-bottom: 2px;
+            color: #f8f9fa;
+        }
+        
+        .video-header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .video-content {
+            padding: 1px;
+        }
+        
+        .video-content video {
+            width: 100%;
+            border-radius: 10px;
+        }
+        
+        /* Single Video Styles */
+        .single-video-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .single-video-container:hover {
+            transform: translateY(-5px);
+        }
+        
+        .video-player-wrapper {
+            position: relative;
+            width: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .video-player-wrapper video {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 15px;
+            background: #000;
+        }
+        
+        /* Ensure video controls are visible */
+        .video-player-wrapper video::-webkit-media-controls {
+            display: flex !important;
+        }
+        
+        .video-player-wrapper video::-webkit-media-controls-panel {
+            background: rgba(0, 0, 0, 0.7);
+        }
+        
+        /* Ensure controls are clickable */
+        .video-player-wrapper video::-webkit-media-controls-play-button,
+        .video-player-wrapper video::-webkit-media-controls-pause-button,
+        .video-player-wrapper video::-webkit-media-controls-volume-slider,
+        .video-player-wrapper video::-webkit-media-controls-fullscreen-button {
+            pointer-events: auto !important;
+        }
+        
+        /* Firefox video controls */
+        .video-player-wrapper video::-moz-media-controls {
+            display: block !important;
+        }
+        
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+            border-radius: 15px;
+            pointer-events: none;
+        }
+        
+        .video-player-wrapper:hover .video-overlay {
+            opacity: 0;
+        }
+        
+        .video-player-wrapper video::-webkit-media-controls {
+            pointer-events: auto;
+        }
+        
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        }
+        
+        .play-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 12px 35px rgba(255, 107, 107, 0.5);
+        }
+        
+        .video-info {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .video-info h3 {
+            color: #333;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .video-info p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+        
+        .fullscreen-video-btn {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            text-align: center;
+            margin: 0 auto;
+            display: block;
+            width: fit-content;
+            font-size: 1rem;
+        }
+        
+        .fullscreen-video-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .fullscreen-video-btn i {
+            margin-right: 8px;
+        }
+        
+        /* Video Modal Styles */
+        .video-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .video-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 900px;
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideIn 0.4s ease;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1001;
+            border: 2px solid white;
+        }
+        
+        .close-modal:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.5);
+            background: linear-gradient(135deg, #ee5a24, #ff6b6b);
+        }
+
+        /* Video modal close button X belgisi */
+        .close-modal::before {
+            content: '✕';
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            font-size: 20px;
+            line-height: 1;
+        }
+        
+        #modal-video {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            background: #000;
+        }
+        
+        /* Ensure modal video controls are visible */
+        #modal-video::-webkit-media-controls {
+            display: flex !important;
+        }
+        
+        #modal-video::-webkit-media-controls-panel {
+            background: rgba(0, 0, 0, 0.7);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .social-section {
+            padding: 60px 0;
+            background: white;
+        }
+        
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+        
+        .social-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px 25px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #e9ecef;
+        }
+        
+        .social-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+        
+        .social-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .social-card:nth-child(1) .social-icon {
+            color: #0088cc;
+        }
+        
+        .social-card:nth-child(2) .social-icon {
+            color: #e4405f;
+        }
+        
+        .social-card:nth-child(3) .social-icon {
+            color: #ff0000;
+        }
+        
+        .social-card h4 {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .social-card p {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+        
+        .social-link {
+            display: inline-block;
+            padding: 10px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .social-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .gallery-section {
+            padding: 60px 0;
+            background: #f8f9fa;
+        }
+        
+        .gallery-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .gallery-header h2 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .gallery-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .carousel-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            width: 350px;
+            margin: 0 auto;
+        }
+        
+        .carousel-container:hover {
+            transform: translateY(-5px);
+        }
+        
+        .carousel-container h3 {
+            color: #333;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .carousel-img-wrap {
+            width: 100%;
+            height: 220px;
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .carousel-img-wrap img {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.7s cubic-bezier(.77,0,.18,1), opacity 0.7s;
+            opacity: 1;
+        }
+        
+        .carousel-img-wrap img.slide-out {
+            transform: translateX(-100%);
+            opacity: 0;
+            z-index: 1;
+        }
+        
+        .carousel-img-wrap img.slide-in {
+            transform: translateX(100%);
+            opacity: 0;
+            z-index: 2;
+        }
+        
+        .carousel-img-wrap img.active {
+            transform: translateX(0);
+            opacity: 1;
+            z-index: 3;
+        }
+
+        /* Navigation Indicator Styles */
+        .nav-item {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .nav-item.active::before {
+            width: 80%;
+        }
+
+
+
+        .nav-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active {
+            color: #ff6b6b !important;
+            font-weight: 600;
+        }
+
+        .nav-item.active:hover {
+            color: #ee5a24 !important;
+        }
+
+        /* Authentication Styles */
+        .auth-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 5px;
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #ffffff;
+            font-size: 0.9rem;
+        }
+
+        .user-role {
+            font-size: 0.8rem;
+            color: #b9b9b9;
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            padding: 15px;
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .profile-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .profile-dropdown a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .profile-dropdown a:hover {
+            background: #f8f9fa;
+            color: #ff6b6b;
+        }
+
+        .profile-dropdown .logout-btn {
+            color: #dc3545;
+            border-top: 1px solid #eee;
+            margin-top: 10px;
+            padding-top: 15px;
+        }
+
+        .profile-dropdown .logout-btn:hover {
+            background: #fff5f5;
+            color: #dc3545;
+        }
+
+        /* Login Modal Styles */
+        .login-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .login-modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideIn 0.4s ease;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h2 {
+            color: #333;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .phone-input-container {
+            display: flex;
+            align-items: center;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .phone-input-container:focus-within {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .phone-prefix {
+            background: #f8f9fa;
+            padding: 15px 12px;
+            color: #666;
+            font-weight: 600;
+            border-right: 1px solid #e9ecef;
+            font-size: 1rem;
+        }
+        
+        .phone-input-container input {
+            border: none;
+            border-radius: 0;
+            flex: 1;
+        }
+        
+        .phone-input-container input:focus {
+            box-shadow: none;
+        }
+
+        .login-btn-submit {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .login-btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .login-btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .close-login {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.25);
+            transition: all 0.2s;
+            z-index: 10;
+            border: 2px solid #fff;
+        }
+        .close-login:hover {
+            transform: scale(1.1) rotate(90deg);
+            background: linear-gradient(135deg, #ee5a24, #ff6b6b);
+        }
+        .close-login::before {
+            content: '✕';
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            font-size: 22px;
+            line-height: 1;
+        }
+        .login-content {
+            position: relative;
+        }
+
+        /* X belgisi uchun chiroyli stillar */
+        .close-login {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1001;
+            border: 2px solid white;
+        }
+        
+        .close-login:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.5);
+            background: linear-gradient(135deg, #ee5a24, #ff6b6b);
+        }
+
+        /* Profile modal close button */
+        #closeProfile {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1001;
+            border: 2px solid white;
+        }
+        
+        #closeProfile:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.5);
+            background: linear-gradient(135deg, #ee5a24, #ff6b6b);
+        }
+
+        #closeProfile::before {
+            content: '✕';
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        /* Mobile close button improvements */
+        .mobile-menu .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-menu .close-btn:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.5);
+            background: linear-gradient(135deg, #ee5a24, #ff6b6b);
+        }
+
+        /* Mobile close button X belgisi */
+        .mobile-menu .close-btn::before {
+            content: '✕';
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            font-size: 18px;
+            line-height: 1;
+        }
+
+        .error-message {
+            background: #fff5f5;
+            color: #dc3545;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #fed7d7;
+            display: none;
+        }
+
+        .success-message {
+            background: #f0fff4;
+            color: #38a169;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #c6f6d5;
+            display: none;
+        }
+
+        /* Profile Info Modal Styles */
+        .profile-info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .profile-info-item:last-child {
+            border-bottom: none;
+        }
+
+        .profile-info-item label {
+            font-weight: 600;
+            color: #333;
+            min-width: 150px;
+        }
+
+        .profile-info-item span {
+            color: #666;
+            text-align: right;
+            flex: 1;
+            margin-left: 20px;
+        }
+
+        /* Mobile User Profile Styles */
+        .mobile-user-profile {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 15px;
+        }
+
+        .mobile-user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .mobile-user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .mobile-user-details {
+            flex: 1;
+        }
+
+        .mobile-user-name {
+            font-weight: 600;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .mobile-user-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            color: #333;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .mobile-nav-item:hover {
+            background: #f8f9fa;
+            color: #ff6b6b;
+        }
+
+        .mobile-nav-item.logout-btn {
+            color: #dc3545;
+            background: #fff5f5;
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-weight: 600;
+        }
+
+        .mobile-nav-item.logout-btn:hover {
+            background: #ffe6e6;
+            color: #dc3545;
+        }
+
+        .mobile-login-btn {
+            width: auto;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            align-self: flex-start;
+        }
+
+        .mobile-login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .mobile-login-container {
+            padding: 10px 15px;
+            margin-bottom: 10px;
+        }
+
+        /* Mobile close button improvements */
+        .mobile-menu .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-menu .close-btn:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.5);
+            background: linear-gradient(135deg, #ee5a24, #ff6b6b);
+        }
+
+        /* Mobile close button X belgisi */
+        .mobile-menu .close-btn::before {
+            content: '✕';
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            font-size: 18px;
+            line-height: 1;
+        }
+
+        /* Mobile navigation indicators */
+        .mobile-menu .nav-item {
+            position: relative;
+            padding: 15px 20px;
+            margin: 5px 0;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu .nav-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            border-radius: 0 2px 2px 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .mobile-menu .nav-item.active::before {
+            opacity: 1;
+        }
+
+        .mobile-menu .nav-item.active {
+            background: rgba(255, 107, 107, 0.1);
+            color: #ff6b6b !important;
+            font-weight: 600;
+        }
+
+        .mobile-menu .nav-item::after {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .feature-card {
+                padding: 30px 20px;
+            }
+            
+            .gallery {
+                gap: 15px;
+            }
+            
+            .carousel-container {
+                padding: 20px;
+            }
+            
+            .single-video-container {
+                padding: 20px;
+                margin: 0 15px;
+            }
+            
+            .video-info h3 {
+                font-size: 1.3rem;
+            }
+            
+            .video-info p {
+                font-size: 0.95rem;
+            }
+            
+            .play-button {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+            
+            .auth-container {
+                gap: 10px;
+            }
+            
+            .login-btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+            
+            /* Mobile qurilmalarda desktop profil yashirish */
+            .user-profile {
+                display: none !important;
+            }
+            
+            .user-avatar {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+            
+            .user-name {
+                font-size: 0.8rem;
+            }
+            
+            .user-role {
+                font-size: 0.7rem;
+            }
+            
+            .login-content {
+                padding: 30px 20px;
+            }
+            
+            .login-header h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <img src="rasm1.webp" alt="Avtoexclusive logo">
+            <span>Avtoexclusive</span>
+        </div>
+        <nav>
+            <a href="index.html" class="nav-item active">Bosh sahifa</a>
+            <a href="avtomaktab.html" class="nav-item">Ariza qoldirish</a>
+            <a href="aloqa.html" class="nav-item">Aloqa</a>
+            <a href="admin.html" class="nav-item">Ma'lumotlar</a>
+            <a href="darslik.html" class="nav-item">Darslik</a>
+            <a href="https://maps.app.goo.gl/3vy3i4WX77W7WvLj7">Xarita</a>
+        
+        </nav>
+        <div class="auth-container">
+            <!-- Login button (shown when not logged in) -->
+            <button class="login-btn" id="loginBtn">
+                <i class="fas fa-sign-in-alt"></i> Kirish
+            </button>
+            
+            <!-- User profile (shown when logged in) -->
+            <div class="user-profile" id="userProfile" style="display: none;">
+                <div class="user-avatar" id="userAvatar">U</div>
+                <div class="user-info">
+                    <div class="user-name" id="userName">Foydalanuvchi</div>
+                    <div class="user-role">O'quvchi</div>
+                </div>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <a href="#profile">
+                        <i class="fas fa-user"></i> Profil
+                    </a>
+                    <a href="#settings">
+                        <i class="fas fa-cog"></i> Sozlamalar
+                    </a>
+                    <a href="#info">
+                        <i class="fas fa-info-circle"></i> Ma'lumotlar
+                    </a>
+                    <a href="#" class="logout-btn" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i> Chiqish
+                    </a>
+                </div>
+            </div>
+        </div>
+        <button class="mobile-menu-btn">☰</button>
+    </div>
+    
+    <div class="mobile-menu">
+        <button class="close-btn" id="mobileCloseBtn"></button>
+        
+        <!-- Mobile User Profile -->
+        <div class="mobile-user-profile" id="mobileUserProfile" style="display: none;">
+            <div class="mobile-user-info">
+                <div class="mobile-user-avatar" id="mobileUserAvatar">U</div>
+                <div class="mobile-user-details">
+                    <div class="mobile-user-name" id="mobileUserName">Foydalanuvchi</div>
+                </div>
+            </div>
+            <div class="mobile-user-actions">
+                <a href="#" class="mobile-nav-item logout-btn" id="mobileLogoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Chiqish
+                </a>
+            </div>
+        </div>
+        
+        <!-- Mobile Login Button -->
+        <div class="mobile-login-container">
+            <button class="mobile-login-btn" id="mobileLoginBtn" style="display: block;">
+                <i class="fas fa-sign-in-alt"></i> Kirish
+            </button>
+        </div>
+        
+        <a href="index.html" class="nav-item active">Bosh sahifa</a>    
+        <a href="avtomaktab.html" class="nav-item">Ariza qoldirish</a>
+        <a href="aloqa.html" class="nav-item">Aloqa</a>
+        <a href="admin.html" class="nav-item">Ma'lumotlar</a>
+        <a href="darslik.html" class="nav-item">Darslik</a>
+        <a href="tps://maps.app.goo.gl/3vy3i4WX77W7WvLj7" class="nav-item">Xarita</a>
+      
+    </div>
+
+    <!-- Login Modal -->
+    <div class="login-modal" id="loginModal">
+        <div class="login-content">
+            <button class="close-login" id="closeLogin"></button>
+            <div class="login-header">
+                <h2>Tizimga kirish</h2>
+                <p>Telefon raqam va tug'ilgan sanangiz bilan kirish</p>
+            </div>
+            
+            <div class="error-message" id="errorMessage"></div>
+            <div class="success-message" id="successMessage"></div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="phoneInput">Telefon raqam</label>
+                    <div class="phone-input-container">
+                        <span class="phone-prefix">+998-</span>
+                        <input type="tel" id="phoneInput" placeholder="123456789" maxlength="9" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="birthDateInput">Tug'ilgan sana</label>
+                    <input type="text" id="birthDateInput" placeholder="09-05-2005" maxlength="10" required>
+                </div>
+                
+                <button type="submit" class="login-btn-submit" id="loginSubmitBtn">
+                    <i class="fas fa-sign-in-alt"></i> Kirish
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Profile Info Modal -->
+    <div class="login-modal" id="profileModal">
+        <div class="login-content">
+            <button class="close-login" id="closeProfile"></button>
+            <div class="login-header">
+                <h2>👤 Foydalanuvchi ma'lumotlari</h2>
+                <p>Shaxsiy ma'lumotlaringiz</p>
+            </div>
+            
+            <div id="profileInfo">
+                <div class="profile-info-item">
+                    <label>Ism va Familiya:</label>
+                    <span id="profileName">-</span>
+                </div>
+                <div class="profile-info-item">
+                    <label>Telefon raqam:</label>
+                    <span id="profilePhone">-</span>
+                </div>
+                <div class="profile-info-item">
+                    <label>Tug'ilgan sana:</label>
+                    <span id="profileBirthDate">-</span>
+                </div>
+                <div class="profile-info-item">
+                    <label>Ro'yxatdan o'tgan sana:</label>
+                    <span id="profileCreatedAt">-</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1>🚗 Avtoexclusive'ga Xush Kelibsiz!</h1>
+            <p>Professional haydovchilik guvohnomasini olish uchun zamonaviy platforma</p>
+            <a href="https://test.maktabavto.uz/" class="cta-btn" id="testBtn">
+                <i class="fas fa-play"></i> Test ishlash
+            </a>
+        </div>
+    </div>
+
+    <div class="features-section">
+        <div class="section">
+            <h2>🎯 Bizning Afzalliklar</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h3>Professional Avtomaktab</h3>
+                    <p>Avtoexclusive tajribali va litsenziyaga ega o'qituvchilar bilan xizmat ko'rsatadi. Har bir o'quvchiga individual yondashuv kafolatlanadi.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-car"></i>
+                    <h3>Zamonaviy Avto Texnika</h3>
+                    <p>Zamonaviy va qulay dizayn. O'qituvchilarimiz tomonidan aniq va professional savollar tuzilgan.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Diqqat!</h3>
+                    <p>Sayt test rejimida ishlamoqda. Savol yoki takliflaringiz bo'lsa, aloqa bo'limi orqali murojaat qiling.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="video-section">
+        <div class="section">
+            <div class="video-container">
+                <div class="video-header">
+                    <h2>Avtoexclusive haqida</h2>
+                </div>
+                <div class="video-content">
+                    <div class="single-video-container">
+                        <div class="video-player-wrapper">
+                            <video id="main-video" controls>
+                                <source src="video_1.mp4" type="video/mp4">
+                                Brauzeringiz video formatini qo'llab-quvvatlamaydi.
+                            </video>
+                            <div class="video-overlay">
+                                <div class="play-button">
+                                    <i class="fas fa-play"></i>
+                        </div>
+                        </div>
+                        </div>
+                        <div class="video-info">
+                            <h3>Avtoexclusive haqida</h3>
+                        </div>
+                        <button class="fullscreen-video-btn">
+                            <i class="fas fa-expand"></i> Kattalashtirish
+                        </button>
+                    </div>
+                </div>
+                <!-- Modal for fullscreen video -->
+                <div id="video-modal" class="video-modal">
+                    <div class="modal-content">
+                        <span class="close-modal"></span>
+                        <video id="modal-video" controls>
+                            <source src="video_1.mp4" type="video/mp4">
+                            Brauzeringiz video formatini qo'llab-quvvatlamaydi.
+                        </video>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="social-section">
+        <div class="section">
+            <h2>🌐 Ijtimoiy Tarmoqlar</h2>
+            <div class="social-grid">
+                <div class="social-card">
+                    <i class="fab fa-telegram social-icon"></i>
+                    <h4>Telegram</h4>
+                    <p>Eng tezkor aloqa uchun</p>
+                    <a href="#" class="social-link">Qo'shilish</a>
+                </div>
+                <div class="social-card">
+                    <i class="fab fa-instagram social-icon"></i>
+                    <h4>Instagram</h4>
+                    <p>Fotolar va videolar</p>
+                    <a href="#" class="social-link">Kuzatish</a>
+                </div>
+
+                <div class="social-card">
+                    <i class="fab fa-youtube social-icon"></i>
+                    <h4>YouTube</h4>
+                    <p>Darsliklar va ko'rsatmalar</p>
+                    <a href="#" class="social-link">Kanalga o'tish</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="gallery-section">
+        <div class="section">
+            <div class="gallery-header">
+                <h2>📸 Bizning Avto Galereya</h2>
+                <p>Avtomaktab faoliyati va imkoniyatlari</p>
+            </div>
+            <div class="gallery" style="display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; align-items: flex-start;">
+                <div class="carousel-container">
+                    <h3 id="carousel-title-1">Haydovchilik imtihoni</h3>
+                    <div class="carousel-img-wrap" id="carousel-img-wrap-1">
+                        <img id="carousel-img-1a" src="photo1.webp" alt="Haydovchilik imtihoni" class="active">
+                        <img id="carousel-img-1b" src="photo2.webp" alt="Haydovchilik imtihoni 2" style="display:none;">
+                        <img id="carousel-img-1c" src="photo3.webp" alt="Haydovchilik imtihoni 3" style="display:none;">
+                    </div>
+                </div>
+                <div class="carousel-container">
+                    <h3 id="carousel-title-2">Yo'l harakati qoidalari (YHQ) 2024</h3>
+                    <div class="carousel-img-wrap" id="carousel-img-wrap-2">
+                        <img id="carousel-img-2a" src="photo4.webp" alt="YHQ 2024" class="active">
+                        <img id="carousel-img-2b" src="photo5.webp" alt="YHQ 2025" style="display:none;">
+                        <img id="carousel-img-2c" src="photo6.webp" alt="YHQ 2025" style="display:none;">
+                    </div>
+                </div>
+                <div class="carousel-container">
+                    <h3 id="carousel-title-3">Murojat uchun</h3>
+                    <div class="carousel-img-wrap" id="carousel-img-wrap-3">
+                        <img id="carousel-img-3a" src="photo7.jpg" alt="Murojat uchun" class="active">
+                        <img id="carousel-img-3b" src="photo8.jpg" alt="Avtomaktab test savollari" style="display:none;">
+                        <img id="carousel-img-3c" src="photo9.jpg" alt="Avtomaktab yangiliklari" style="display:none;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        © 2025 Avtoexclusive. Barcha huquqlar himoyalangan.
+    </div>
+
+    <script>
+        // Supabase Configuration
+        const supabaseUrl = 'https://oietcsgsbklgqjatefxt.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9pZXRjc2dzYmtsZ3FqYXRlZnh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg3MTg5NTAsImV4cCI6MjA2NDI5NDk1MH0.I_1HUJSBjclNsNNI69yr133UD-VZZCdAoMpLCBQb_ns';
+        const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+        // Authentication state
+        let currentUser = null;
+
+        // Utility functions
+        function formatToISO(dateStr) {
+            // Convert from mm-dd-yyyy to YYYY-MM-DD for database
+            const cleanDate = dateStr.replace(/\D/g, '');
+            const month = cleanDate.substring(0, 2);
+            const day = cleanDate.substring(2, 4);
+            const year = cleanDate.substring(4, 8);
+            return `${year}-${month}-${day}`;
+        }
+
+        function formatPhoneNumber(phone) {
+            // Remove all non-digits and return just the 9 digits
+            const cleaned = phone.replace(/\D/g, '');
+            if (cleaned.length === 9) {
+                return cleaned; // Return just the 9 digits without +998
+            }
+            return phone;
+        }
+
+        async function findUserByPhone(phone) {
+            // Try different phone formats
+            const formats = [
+                phone, // Original format
+                `+998${phone}`, // With +998 prefix
+                `998${phone}`, // With 998 prefix
+                phone.replace(/\D/g, '') // Only digits
+            ];
+            
+            for (const format of formats) {
+                const { data, error } = await supabase
+                    .from('users')
+                    .select('*')
+                    .eq('phone', format)
+                    .single();
+                
+                if (data && !error) {
+                    return data;
+                }
+            }
+            
+            return null;
+        }
+
+        function showMessage(elementId, message, isError = false) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.style.display = 'block';
+            element.className = isError ? 'error-message' : 'success-message';
+            
+            setTimeout(() => {
+                element.style.display = 'none';
+            }, 5000);
+        }
+
+        function updateAuthUI() {
+            const loginBtn = document.getElementById('loginBtn');
+            const userProfile = document.getElementById('userProfile');
+            const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+            const mobileUserProfile = document.getElementById('mobileUserProfile');
+            const testBtn = document.getElementById('testBtn');
+            
+            if (currentUser) {
+                // Desktop - show profile, hide login
+                loginBtn.style.display = 'none';
+                userProfile.style.display = 'flex';
+                
+                // Mobile - show profile in menu only, hide desktop profile
+                mobileLoginBtn.style.display = 'none';
+                mobileUserProfile.style.display = 'block';
+                
+                // Update test button for logged in users
+                testBtn.href = 'https://tests.maktabavto.uz/';
+                testBtn.classList.add('logged-in');
+                
+                // Update user info
+                const userName = document.getElementById('userName');
+                const userAvatar = document.getElementById('userAvatar');
+                const mobileUserName = document.getElementById('mobileUserName');
+                const mobileUserAvatar = document.getElementById('mobileUserAvatar');
+                
+                const displayName = currentUser.fio || currentUser.ism || 'Foydalanuvchi';
+                const avatarLetter = displayName.charAt(0).toUpperCase();
+                
+                // Update desktop profile
+                userName.textContent = displayName;
+                userAvatar.textContent = avatarLetter;
+                
+                // Update mobile profile
+                mobileUserName.textContent = displayName;
+                mobileUserAvatar.textContent = avatarLetter;
+            } else {
+                // Desktop - show login, hide profile
+                loginBtn.style.display = 'block';
+                userProfile.style.display = 'none';
+                
+                // Mobile - show login
+                mobileLoginBtn.style.display = 'block';
+                mobileUserProfile.style.display = 'none';
+                
+                // Update test button for non-logged in users
+                testBtn.href = 'https://test.maktabavto.uz/';
+                testBtn.classList.remove('logged-in');
+            }
+        }
+
+        // Check if user is already logged in
+        function checkAuthStatus() {
+            const savedUser = localStorage.getItem('avtoexclusive_user');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                updateAuthUI();
+            }
+        }
+
+        // Karusel ma'lumotlari
+        const carousels = [
+            {
+                titles: ["Haydovchilik imtihoni", "Haydovchilik imtihoni 2", "Haydovchilik imtihoni 3"],
+                imgIds: ["carousel-img-1a", "carousel-img-1b", "carousel-img-1c"],
+                wrapId: "carousel-img-wrap-1",
+                titleId: "carousel-title-1"
+            },
+            {
+                titles: ["Yo'l harakati qoidalari (YHQ) 2024", "YHQ 2025", "YHQ 2025"],
+                imgIds: ["carousel-img-2a", "carousel-img-2b", "carousel-img-2c"],
+                wrapId: "carousel-img-wrap-2",
+                titleId: "carousel-title-2"
+            },
+            {
+                titles: ["Murojat uchun", "Avtomaktab test savollari", "Avtomaktab yangiliklari"],
+                imgIds: ["carousel-img-3a", "carousel-img-3b", "carousel-img-3c"],
+                wrapId: "carousel-img-wrap-3",
+                titleId: "carousel-title-3"
+            }
+        ];
+        let carouselIdx = [0,0,0];
+        function slideCarousel(i) {
+            const carousel = carousels[i];
+            const prevIdx = carouselIdx[i];
+            carouselIdx[i] = (carouselIdx[i] + 1) % carousel.imgIds.length;
+            const imgs = carousel.imgIds.map(id => document.getElementById(id));
+            imgs.forEach(img => { img.className = ''; img.style.display = 'none'; });
+            imgs[prevIdx].className = 'slide-out'; imgs[prevIdx].style.display = '';
+            const nextImg = imgs[carouselIdx[i]];
+            nextImg.className = 'slide-in'; nextImg.style.display = '';
+            setTimeout(() => {
+                imgs[prevIdx].style.display = 'none';
+                nextImg.className = 'active';
+                document.getElementById(carousel.titleId).textContent = carousel.titles[carouselIdx[i]];
+            }, 700);
+        }
+        setInterval(() => {
+            slideCarousel(0);
+            setTimeout(() => {
+                slideCarousel(1);
+                setTimeout(() => {
+                    slideCarousel(2);
+                }, 1200);
+            }, 1200);
+        }, 5000);
+
+        // Mobile Menu
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const mobileCloseBtn = document.getElementById('mobileCloseBtn');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.add('active');
+        });
+        
+        mobileCloseBtn.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+        });
+
+        // Navigation indicator system
+        function setActiveNavItem() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                const href = item.getAttribute('href');
+                if (href === currentPage) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        // Set active navigation item on page load
+        setActiveNavItem();
+
+        // Single video functionality
+        const mainVideo = document.getElementById('main-video');
+        const playButton = document.querySelector('.play-button');
+        const videoOverlay = document.querySelector('.video-overlay');
+        
+        // Play button functionality
+        playButton.addEventListener('click', () => {
+            mainVideo.play();
+            videoOverlay.style.opacity = '0';
+        });
+        
+        // Hide overlay when video starts playing
+        mainVideo.addEventListener('play', () => {
+            videoOverlay.style.opacity = '0';
+        });
+        
+        // Show overlay when video is paused
+        mainVideo.addEventListener('pause', () => {
+            videoOverlay.style.opacity = '1';
+        });
+        
+        // Ensure video controls are always accessible
+        mainVideo.addEventListener('loadedmetadata', () => {
+            // Enable controls after video loads
+            mainVideo.controls = true;
+        });
+        
+        // Make sure overlay doesn't interfere with video controls
+        videoOverlay.addEventListener('click', (e) => {
+            if (e.target === playButton || playButton.contains(e.target)) {
+                return; // Allow play button clicks
+            }
+            // For other clicks on overlay, let them pass through to video
+            e.stopPropagation();
+        });
+
+        // Modal logic for fullscreen video
+        const modal = document.getElementById('video-modal');
+        const modalVideo = document.getElementById('modal-video');
+        const closeModal = document.querySelector('.close-modal');
+        const fullscreenBtn = document.querySelector('.fullscreen-video-btn');
+
+        fullscreenBtn.onclick = () => {
+            modal.classList.add('active');
+            modalVideo.load();
+            modalVideo.play();
+        };
+
+        closeModal.onclick = () => {
+            modal.classList.remove('active');
+            modalVideo.pause();
+            modalVideo.currentTime = 0;
+        };
+
+        modal.onclick = (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('active');
+                modalVideo.pause();
+                modalVideo.currentTime = 0;
+            }
+        };
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                modal.classList.remove('active');
+                modalVideo.pause();
+                modalVideo.currentTime = 0;
+            }
+        });
+
+        // Authentication Event Handlers
+        const loginBtn = document.getElementById('loginBtn');
+        const loginModal = document.getElementById('loginModal');
+        const closeLogin = document.getElementById('closeLogin');
+        const loginForm = document.getElementById('loginForm');
+        const userProfile = document.getElementById('userProfile');
+        const profileDropdown = document.getElementById('profileDropdown');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        // Open login modal
+        loginBtn.addEventListener('click', () => {
+            loginModal.classList.add('active');
+        });
+
+        // Close login modal
+        closeLogin.addEventListener('click', () => {
+            loginModal.classList.remove('active');
+            // Clear form
+            loginForm.reset();
+            showMessage('errorMessage', '', false);
+            showMessage('successMessage', '', false);
+        });
+
+        // Close modal when clicking outside
+        loginModal.addEventListener('click', (e) => {
+            if (e.target === loginModal) {
+                loginModal.classList.remove('active');
+                loginForm.reset();
+                showMessage('errorMessage', '', false);
+                showMessage('successMessage', '', false);
+            }
+        });
+
+        // Handle login form submission
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const phoneInput = document.getElementById('phoneInput');
+            const birthDateInput = document.getElementById('birthDateInput');
+            const submitBtn = document.getElementById('loginSubmitBtn');
+            
+            const phone = phoneInput.value.trim();
+            const birthDate = birthDateInput.value.trim();
+            
+            // Validation
+            if (!phone || !birthDate) {
+                showMessage('errorMessage', 'Barcha maydonlarni to\'ldiring', true);
+                return;
+            }
+            
+            // Validate phone format (9 digits)
+            const phoneDigits = phone.replace(/\D/g, '');
+            if (phoneDigits.length !== 9) {
+                showMessage('errorMessage', 'Telefon raqam 9 ta raqamdan iborat bo\'lishi kerak', true);
+                return;
+            }
+            
+            // Validate date format (with or without dashes)
+            const dateDigits = birthDate.replace(/\D/g, '');
+            if (dateDigits.length !== 8) {
+                showMessage('errorMessage', 'Sana 8 ta raqamdan iborat bo\'lishi kerak (mm-dd-yyyy formatida)', true);
+                return;
+            }
+            
+            // Validate date components
+            const day = parseInt(dateDigits.substring(0, 2));
+            const month = parseInt(dateDigits.substring(2, 4));
+            const year = parseInt(dateDigits.substring(4, 8));
+            
+            if (day < 1 || day > 31 || month < 1 || month > 12 || year < 1900 || year > 2010) {
+                showMessage('errorMessage', 'Noto\'g\'ri sana formati. Iltimos mm-dd-yyyy formatida kiriting', true);
+                return;
+            }
+            
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Kirish...';
+                
+                // Format date for Supabase
+                const formattedDate = formatToISO(birthDate);
+                
+                // First try to find user by phone with different formats
+                const userData = await findUserByPhone(phone);
+                
+                if (!userData) {
+                    showMessage('errorMessage', '❌ Telefon raqam noto\'g\'ri yoki database\'da mavjud emas', true);
+                    return;
+                }
+                
+                // Check if birth date matches
+                if (userData.birth_date !== formattedDate) {
+                    showMessage('errorMessage', '❌ Tug\'ilgan sana noto\'g\'ri', true);
+                    return;
+                }
+                
+                // Login successful
+                currentUser = userData;
+                
+                // Login successful
+                currentUser = userData;
+                localStorage.setItem('avtoexclusive_user', JSON.stringify(userData));
+                updateAuthUI();
+                
+                showMessage('successMessage', 'Muvaffaqiyatli kirdingiz!', false);
+                
+                // Close modal after success va sahifani yangilash
+                setTimeout(() => {
+                    loginModal.classList.remove('active');
+                    loginForm.reset();
+                    window.location.reload(); // Sahifani yangilash
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Login error:', error);
+                showMessage('errorMessage', 'Xatolik yuz berdi. Qaytadan urinib ko\'ring', true);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Kirish';
+            }
+        });
+
+        // Toggle profile dropdown
+        userProfile.addEventListener('click', () => {
+            profileDropdown.classList.toggle('active');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!userProfile.contains(e.target)) {
+                profileDropdown.classList.remove('active');
+            }
+        });
+
+        // Handle logout
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Clear user data
+            currentUser = null;
+            localStorage.removeItem('avtoexclusive_user');
+            updateAuthUI();
+            
+            // Close dropdown
+            profileDropdown.classList.remove('active');
+            
+            showMessage('successMessage', 'Tizimdan chiqdingiz', false);
+        });
+
+        // Profile modal functionality
+        const profileModal = document.getElementById('profileModal');
+        const closeProfile = document.getElementById('closeProfile');
+
+        // Close profile modal
+        closeProfile.addEventListener('click', () => {
+            profileModal.classList.remove('active');
+        });
+
+        // Close modal when clicking outside
+        profileModal.addEventListener('click', (e) => {
+            if (e.target === profileModal) {
+                profileModal.classList.remove('active');
+            }
+        });
+
+        // Show profile info
+        function showProfileInfo() {
+            if (currentUser) {
+                document.getElementById('profileName').textContent = currentUser.fio || currentUser.ism || 'Ma\'lumot yo\'q';
+                document.getElementById('profilePhone').textContent = currentUser.phone || 'Ma\'lumot yo\'q';
+                document.getElementById('profileBirthDate').textContent = currentUser.birth_date || 'Ma\'lumot yo\'q';
+                document.getElementById('profileCreatedAt').textContent = currentUser.created_at || 'Ma\'lumot yo\'q';
+                profileModal.classList.add('active');
+            }
+        }
+
+        // Add click handlers for profile links
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('a[href="#info"]')) {
+                e.preventDefault();
+                showProfileInfo();
+            }
+        });
+
+        // Mobile authentication handlers
+        const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+        const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
+
+        // Mobile login button
+        mobileLoginBtn.addEventListener('click', () => {
+            loginModal.classList.add('active');
+        });
+
+        // Mobile logout button
+        mobileLogoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Clear user data
+            currentUser = null;
+            localStorage.removeItem('avtoexclusive_user');
+            updateAuthUI();
+            
+            showMessage('successMessage', 'Tizimdan chiqdingiz', false);
+        });
+
+        // Mobile profile info functionality
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.mobile-nav-item[href="#info"]')) {
+                e.preventDefault();
+                showProfileInfo();
+            }
+        });
+
+        // Input formatting
+        const phoneInput = document.getElementById('phoneInput');
+        const birthDateInput = document.getElementById('birthDateInput');
+
+        // Phone input formatting (only numbers)
+        phoneInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 9) {
+                value = value.substring(0, 9);
+            }
+            e.target.value = value;
+        });
+
+        // Date input formatting (with dashes)
+        birthDateInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 8) {
+                value = value.substring(0, 8);
+            }
+            
+            // Add dashes automatically while typing
+            if (value.length >= 2 && value.length < 4) {
+                value = value.substring(0, 2) + '-' + value.substring(2);
+            } else if (value.length >= 4) {
+                value = value.substring(0, 2) + '-' + value.substring(2, 4) + '-' + value.substring(4);
+            }
+            
+            e.target.value = value;
+        });
+
+        // Format date with dashes when user finishes typing
+        birthDateInput.addEventListener('blur', (e) => {
+            const value = e.target.value.replace(/\D/g, '');
+            if (value.length === 8) {
+                const day = value.substring(0, 2);
+                const month = value.substring(2, 4);
+                const year = value.substring(4, 8);
+                e.target.value = `${day}-${month}-${year}`;
+            }
+        });
+
+        // Format date while typing (add dashes automatically) - MM-DD-YYYY format
+        birthDateInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 8) {
+                value = value.substring(0, 8);
+            }
+            
+            // Add dashes automatically while typing - MM-DD-YYYY format
+            if (value.length >= 2 && value.length < 4) {
+                value = value.substring(0, 2) + '-' + value.substring(2);
+            } else if (value.length >= 4) {
+                value = value.substring(0, 2) + '-' + value.substring(2, 4) + '-' + value.substring(4);
+            }
+            
+            e.target.value = value;
+        });
+
+
+
+        // Initialize authentication
+        checkAuthStatus();
+
+        function hideArizaAndMapForLoggedIn() {
+          const user = localStorage.getItem('avtoexclusive_user');
+          // Desktop menyu
+          const ariza = document.querySelector('nav a[href*="avtomaktab.html"]');
+          if (ariza) ariza.style.display = user ? 'none' : '';
+          const map = document.querySelector('nav a[href*="maps.app.goo.gl"]');
+          if (map) map.style.display = user ? 'none' : '';
+          // Mobil menyu
+          const mobileAriza = document.querySelector('.mobile-menu a[href*="avtomaktab.html"]');
+          if (mobileAriza) mobileAriza.style.display = user ? 'none' : '';
+          const mobileMap = document.querySelector('.mobile-menu a[href*="maps.app.goo.gl"]');
+          if (mobileMap) mobileMap.style.display = user ? 'none' : '';
+        }
+        function setActiveNavItem() {
+          const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+          document.querySelectorAll('.nav-item').forEach(item => {
+            const href = item.getAttribute('href');
+            if (href && href.indexOf(currentPage) !== -1) {
+              item.classList.add('active');
+            } else {
+              item.classList.remove('active');
+            }
+          });
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+          hideArizaAndMapForLoggedIn();
+          setActiveNavItem();
+        });
+    </script>
+</body>
+</html>
