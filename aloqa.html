@@ -11,6 +11,79 @@
     <link rel="icon" type="image/webp" href="/rasm1.webp">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        /* Navigation Indicator Styles */
+        .nav-item {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .nav-item.active::before {
+            width: 80%;
+        }
+
+        .nav-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active {
+            color: #ff6b6b !important;
+            font-weight: 600;
+        }
+
+        .nav-item.active:hover {
+            color: #ee5a24 !important;
+        }
+
+        /* Mobile navigation indicators */
+        .mobile-menu .nav-item {
+            position: relative;
+            padding: 15px 20px;
+            margin: 5px 0;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu .nav-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            border-radius: 0 2px 2px 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .mobile-menu .nav-item.active::before {
+            opacity: 1;
+        }
+
+        .mobile-menu .nav-item.active {
+            background: rgba(255, 107, 107, 0.1);
+            color: #ff6b6b !important;
+            font-weight: 600;
+        }
+
+        .mobile-menu .nav-item::after {
+            display: none;
+        }
+
+        /* Contact Section Styles */
         .contact-section {
             padding: 40px 0;
             background: #f8f9fa;
@@ -239,6 +312,45 @@
         .social-link:hover {
             background: rgba(255, 255, 255, 0.3);
         }
+
+        /* Phone Input Container */
+        .phone-input-container {
+            display: flex;
+            align-items: center;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        .phone-input-container:focus-within {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            background: white;
+            transform: translateY(-1px);
+        }
+
+        .phone-prefix {
+            background: #f8f9fa;
+            padding: 12px 15px;
+            color: #666;
+            font-weight: 600;
+            border-right: 1px solid #e9ecef;
+            font-size: 1rem;
+        }
+
+        .phone-input-container input {
+            border: none;
+            border-radius: 0;
+            flex: 1;
+            background: transparent;
+        }
+
+        .phone-input-container input:focus {
+            box-shadow: none;
+            transform: none;
+        }
         
         @media (max-width: 768px) {
             .contact-grid {
@@ -271,85 +383,6 @@
                 font-size: 0.9rem;
             }
         }
-
-        /* Navigation Indicator Styles */
-        .nav-item {
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .nav-item::before {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 3px;
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-            border-radius: 2px;
-            transition: width 0.3s ease;
-        }
-
-        .nav-item.active::before {
-            width: 80%;
-        }
-
-
-
-        .nav-item:hover {
-            transform: translateY(-2px);
-        }
-
-        .nav-item.active {
-            color: #ff6b6b !important;
-            font-weight: 600;
-        }
-
-        .nav-item.active:hover {
-            color: #ee5a24 !important;
-        }
-
-        /* Mobile navigation indicators */
-        .mobile-menu .nav-item {
-            position: relative;
-            padding: 15px 20px;
-            margin: 5px 0;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .mobile-menu .nav-item::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 4px;
-            height: 100%;
-            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-            border-radius: 0 2px 2px 0;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .mobile-menu .nav-item.active::before {
-            opacity: 1;
-        }
-
-        .mobile-menu .nav-item.active {
-            background: rgba(255, 107, 107, 0.1);
-            color: #ff6b6b !important;
-            font-weight: 600;
-        }
-
-        .mobile-menu .nav-item::after {
-            display: none;
-        }
-        .user-name {
-          font-weight: 600;
-          color: #fff !important;
-          font-size: 0.9rem;
-        }
     </style>
 </head>
 <body>
@@ -360,7 +393,7 @@
         </div>
         <nav>
             <a href="index.html" class="nav-item">Bosh sahifa</a>
-                    <a href="avtomaktab.html" class="nav-item">Ariza qoldirish</a>
+            <a href="avtomaktab.html" class="nav-item">Ariza qoldirish</a>
             <a href="aloqa.html" class="nav-item active">Aloqa</a>
             <a href="admin.html" class="nav-item">Ma'lumotlar</a>
             <a href="darslik.html" class="nav-item">Darslik</a>
@@ -370,7 +403,8 @@
     </div>
     
     <div class="mobile-menu">
-        <button class="close-btn">✕</button>
+        <button class="close-btn" id="mobileCloseBtn"></button>
+        
         <a href="index.html" class="nav-item">Bosh sahifa</a>
         <a href="avtomaktab.html" class="nav-item">Ariza qoldirish</a>
         <a href="aloqa.html" class="nav-item active">Aloqa</a>
@@ -412,11 +446,14 @@
                     <form id="contactForm">
                         <div class="form-group">
                             <label for="name">Ismingiz *</label>
-                            <input type="text" id="name" name="name" required>
+                            <input type="text" id="name" name="name" placeholder="To'liq ismingizni kiriting" required>
                         </div>
                         <div class="form-group">
                             <label for="phone">Telefon raqam *</label>
-                            <input type="tel" id="phone" name="phone" required>
+                            <div class="phone-input-container">
+                                <span class="phone-prefix">+998</span>
+                                <input type="tel" id="phone" name="phone" placeholder="901234567" maxlength="9" required>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="subject">Mavzu</label>
@@ -512,16 +549,31 @@
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9pZXRjc2dzYmtsZ3FqYXRlZnh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg3MTg5NTAsImV4cCI6MjA2NDI5NDk1MH0.I_1HUJSBjclNsNNI69yr133UD-VZZCdAoMpLCBQb_ns';
         const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
+        // Phone number formatting
+        document.getElementById('phone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 9) {
+                value = value.substring(0, 9);
+            }
+            e.target.value = value;
+        });
+
         document.getElementById('contactForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const formData = new FormData(this);
             const fio = formData.get('name');
-            const phone = formData.get('phone');
-            const mavzu = formData.get('subject') || 'Boshqa'; // Agar mavzu bo'sh bo'lsa
+            const phone = '+998' + formData.get('phone');
+            const mavzu = formData.get('subject') || 'Boshqa';
             const xabar = formData.get('message');
             
+            // Validation
+            if (!fio || !phone || phone === '+998') {
+                showModalMessage('❌ Iltimos, barcha majburiy maydonlarni to\'ldiring.');
+                return;
+            }
+            
             try {
-                // Supabase'ga yuborish
+                // Submit to Supabase
                 const { data, error } = await supabase
                     .from('xabar')
                     .insert([{ 
@@ -557,25 +609,31 @@
             mobileMenu.classList.remove('active');
         });
 
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                mobileMenu.classList.remove('active');
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
-          function hideArizaAndMapForLoggedIn() {
+          // Check authentication status and hide navigation items for logged-in users
+          function checkAuthAndHideNav() {
             const user = localStorage.getItem('avtoexclusive_user');
-            // Desktop menyu
-            const ariza = document.querySelector('nav a[href*="avtomaktab.html"]');
-            if (ariza) ariza.style.display = user ? 'none' : '';
-            const map = document.querySelector('nav a[href*="maps.app.goo.gl"]');
-            if (map) map.style.display = user ? 'none' : '';
-            // Mobil menyu
-            const mobileAriza = document.querySelector('.mobile-menu a[href*="avtomaktab.html"]');
-            if (mobileAriza) mobileAriza.style.display = user ? 'none' : '';
-            const mobileMap = document.querySelector('.mobile-menu a[href*="maps.app.goo.gl"]');
-            if (mobileMap) mobileMap.style.display = user ? 'none' : '';
-            // Profil har doim ko'rinsin
-            const userProfile = document.getElementById('userProfile');
-            if (userProfile) userProfile.style.display = 'flex';
-            const mobileUserProfile = document.getElementById('mobileUserProfile');
-            if (mobileUserProfile) mobileUserProfile.style.display = 'block';
+            if (user) {
+              // Hide Application Submission and Map navigation items for logged-in users
+              const arizaNavItems = document.querySelectorAll('.nav-item[href="avtomaktab.html"]');
+              const mapNavItems = document.querySelectorAll('.nav-item[href*="maps.app.goo.gl"], .nav-item[href="map.html"]');
+              
+              arizaNavItems.forEach(item => {
+                item.style.display = 'none';
+              });
+              mapNavItems.forEach(item => {
+                item.style.display = 'none';
+              });
+            }
           }
+          
           function setActiveNavItem() {
             const currentPage = window.location.pathname.split('/').pop() || 'index.html';
             document.querySelectorAll('.nav-item').forEach(item => {
@@ -587,7 +645,8 @@
               }
             });
           }
-          hideArizaAndMapForLoggedIn();
+          
+          checkAuthAndHideNav();
           setActiveNavItem();
         });
     </script>

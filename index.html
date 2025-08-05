@@ -21,6 +21,10 @@
             text-align: center;
             position: relative;
             overflow: hidden;
+            min-height: 61vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .hero-section::before {
@@ -41,20 +45,25 @@
             background: rgba(26,35,126,0.8);
             border-radius: 20px;
             padding: 40px 30px;
-            display: inline-block;
+            max-width: 600px;
+            width: 100%;
+            margin: 0 auto;
             backdrop-filter: blur(10px);
+            text-align: center;
         }
         
         .hero-content h1 {
             font-size: 2.8rem;
             margin-bottom: 20px;
             font-weight: 700;
+            line-height: 1.2;
         }
         
         .hero-content p {
             font-size: 1.3rem;
             margin-bottom: 30px;
             opacity: 0.95;
+            line-height: 1.4;
         }
         
         .cta-btn {
@@ -68,6 +77,11 @@
             border-radius: 50px;
             box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
             transition: all 0.3s ease;
+            text-align: center;
+            min-width: 200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 5;
         }
         
         .cta-btn:hover {
@@ -615,7 +629,6 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-top: 5px;
         }
 
         .login-btn {
@@ -628,6 +641,14 @@
             font-weight: 600;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            white-space: nowrap;
+            min-width: 60px;
+            text-align: center;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .login-btn:hover {
@@ -1564,9 +1585,9 @@
                 <div class="carousel-container">
                     <h3 id="carousel-title-3">Murojat uchun</h3>
                     <div class="carousel-img-wrap" id="carousel-img-wrap-3">
-                        <img id="carousel-img-3a" src="photo7.jpg" alt="Murojat uchun" class="active">
-                        <img id="carousel-img-3b" src="photo8.jpg" alt="Avtomaktab test savollari" style="display:none;">
-                        <img id="carousel-img-3c" src="photo9.jpg" alt="Avtomaktab yangiliklari" style="display:none;">
+                        <img id="carousel-img-3a" src="photo7.webp" alt="Murojat uchun" class="active">
+                        <img id="carousel-img-3b" src="photo8.webp" alt="Avtomaktab test savollari" style="display:none;">
+                        <img id="carousel-img-3c" src="photo9.webp" alt="Avtomaktab yangiliklari" style="display:none;">
                     </div>
                 </div>
             </div>
@@ -1647,6 +1668,10 @@
             const mobileUserProfile = document.getElementById('mobileUserProfile');
             const testBtn = document.getElementById('testBtn');
             
+            // Get navigation items to hide for logged-in users
+            const arizaNavItems = document.querySelectorAll('.nav-item[href="avtomaktab.html"]');
+            const mapNavItems = document.querySelectorAll('.nav-item[href*="maps.app.goo.gl"], .nav-item[href="map.html"]');
+            
             if (currentUser) {
                 // Desktop - show profile, hide login
                 loginBtn.style.display = 'none';
@@ -1655,6 +1680,14 @@
                 // Mobile - show profile in menu only, hide desktop profile
                 mobileLoginBtn.style.display = 'none';
                 mobileUserProfile.style.display = 'block';
+                
+                // Hide Application Submission and Map navigation items for logged-in users
+                arizaNavItems.forEach(item => {
+                    item.style.display = 'none';
+                });
+                mapNavItems.forEach(item => {
+                    item.style.display = 'none';
+                });
                 
                 // Update test button for logged in users
                 testBtn.href = 'https://tests.maktabavto.uz/';
@@ -1684,6 +1717,14 @@
                 // Mobile - show login
                 mobileLoginBtn.style.display = 'block';
                 mobileUserProfile.style.display = 'none';
+                
+                // Show Application Submission and Map navigation items for non-logged-in users
+                arizaNavItems.forEach(item => {
+                    item.style.display = 'block';
+                });
+                mapNavItems.forEach(item => {
+                    item.style.display = 'block';
+                });
                 
                 // Update test button for non-logged in users
                 testBtn.href = 'https://test.maktabavto.uz/';

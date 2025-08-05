@@ -33,8 +33,6 @@
             width: 80%;
         }
 
-
-
         .nav-item:hover {
             transform: translateY(-2px);
         }
@@ -142,33 +140,38 @@
             mobileMenu.classList.remove('active');
         });
 
-        function hideArizaAndMapForLoggedIn() {
+        document.addEventListener('DOMContentLoaded', function() {
+          // Check authentication status and hide navigation items for logged-in users
+          function checkAuthAndHideNav() {
             const user = localStorage.getItem('avtoexclusive_user');
-            // Desktop menyu
-            const ariza = document.querySelector('nav a[href*="avtomaktab.html"]');
-            if (ariza) ariza.style.display = user ? 'none' : '';
-            const map = document.querySelector('nav a[href*="maps.app.goo.gl"]');
-            if (map) map.style.display = user ? 'none' : '';
-            // Mobil menyu
-            const mobileAriza = document.querySelector('.mobile-menu a[href*="avtomaktab.html"]');
-            if (mobileAriza) mobileAriza.style.display = user ? 'none' : '';
-            const mobileMap = document.querySelector('.mobile-menu a[href*="maps.app.goo.gl"]');
-            if (mobileMap) mobileMap.style.display = user ? 'none' : '';
-        }
-        function setActiveNavItem() {
+            if (user) {
+              // Hide Application Submission and Map navigation items for logged-in users
+              const arizaNavItems = document.querySelectorAll('.nav-item[href="avtomaktab.html"]');
+              const mapNavItems = document.querySelectorAll('.nav-item[href*="maps.app.goo.gl"], .nav-item[href="map.html"]');
+              
+              arizaNavItems.forEach(item => {
+                item.style.display = 'none';
+              });
+              mapNavItems.forEach(item => {
+                item.style.display = 'none';
+              });
+            }
+          }
+          
+          function setActiveNavItem() {
             const currentPage = window.location.pathname.split('/').pop() || 'index.html';
             document.querySelectorAll('.nav-item').forEach(item => {
-                const href = item.getAttribute('href');
-                if (href && href.indexOf(currentPage) !== -1) {
-                    item.classList.add('active');
-                } else {
-                    item.classList.remove('active');
-                }
+              const href = item.getAttribute('href');
+              if (href && href.indexOf(currentPage) !== -1) {
+                item.classList.add('active');
+              } else {
+                item.classList.remove('active');
+              }
             });
-        }
-        document.addEventListener('DOMContentLoaded', function() {
-            hideArizaAndMapForLoggedIn();
-            setActiveNavItem();
+          }
+          
+          checkAuthAndHideNav();
+          setActiveNavItem();
         });
     </script>
 </body>

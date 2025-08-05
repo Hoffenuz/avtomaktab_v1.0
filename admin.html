@@ -760,102 +760,18 @@
             <a href="darslik.html" class="nav-item">Darslik</a>
             <a href="https://maps.app.goo.gl/3vy3i4WX77W7WvLj7" class="nav-item">Xarita</a>
         </nav>
-        <div class="auth-container">
-            <!-- Login button (shown when not logged in) -->
-            <button class="login-btn" id="loginBtn">
-                <i class="fas fa-sign-in-alt"></i> Kirish
-            </button>
-            
-            <!-- User profile (shown when logged in) -->
-            <div class="user-profile" id="userProfile" style="display: none;">
-                <div class="user-avatar" id="userAvatar">U</div>
-                <div class="user-info">
-                    <div class="user-name" id="userName">Foydalanuvchi</div>
-                    <div class="user-role">O'quvchi</div>
-                </div>
-                <div class="profile-dropdown" id="profileDropdown">
-                    <a href="#profile">
-                        <i class="fas fa-user"></i> Profil
-                    </a>
-                    <a href="#settings">
-                        <i class="fas fa-cog"></i> Sozlamalar
-                    </a>
-                    <a href="#info">
-                        <i class="fas fa-info-circle"></i> Ma'lumotlar
-                    </a>
-                    <a href="#" class="logout-btn" id="logoutBtn">
-                        <i class="fas fa-sign-out-alt"></i> Chiqish
-                    </a>
-                </div>
-            </div>
-        </div>
         <button class="mobile-menu-btn">☰</button>
     </div>
     
     <div class="mobile-menu">
         <button class="close-btn" id="mobileCloseBtn"></button>
         
-        <!-- Mobile User Profile -->
-        <div class="mobile-user-profile" id="mobileUserProfile" style="display: none;">
-            <div class="mobile-user-info">
-                <div class="mobile-user-avatar" id="mobileUserAvatar">U</div>
-                <div class="mobile-user-details">
-                    <div class="mobile-user-name" id="mobileUserName">Foydalanuvchi</div>
-                </div>
-            </div>
-            <div class="mobile-user-actions">
-                <a href="#" class="mobile-nav-item logout-btn" id="mobileLogoutBtn">
-                    <i class="fas fa-sign-out-alt"></i> Chiqish
-                </a>
-            </div>
-        </div>
-        
-        <!-- Mobile Login Button -->
-        <div class="mobile-login-container">
-            <button class="mobile-login-btn" id="mobileLoginBtn" style="display: block;">
-                <i class="fas fa-sign-in-alt"></i> Kirish
-            </button>
-        </div>
-        
         <a href="index.html" class="nav-item">Bosh sahifa</a>
-            <a href="avtomaktab.html" class="nav-item">Ariza qoldirish</a>
+        <a href="avtomaktab.html" class="nav-item">Ariza qoldirish</a>
         <a href="aloqa.html" class="nav-item">Aloqa</a>
         <a href="admin.html" class="nav-item active">Ma'lumotlar</a>
         <a href="darslik.html" class="nav-item">Darslik</a>
         <a href="https://maps.app.goo.gl/3vy3i4WX77W7WvLj7" class="nav-item">Xarita</a>
-    </div>
-
-    <!-- Login Modal -->
-    <div class="login-modal" id="loginModal">
-        <div class="login-content">
-            <button class="close-login" id="closeLogin"></button>
-            <div class="login-header">
-            <h2>Tizimga kirish</h2>
-                <p>Telefon raqam va tug'ilgan sanangiz bilan kirish</p>
-            </div>
-            
-            <div class="error-message" id="errorMessage"></div>
-            <div class="success-message" id="successMessage"></div>
-            
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="phoneInput">Telefon raqam</label>
-                    <div class="phone-input-container">
-                        <span class="phone-prefix">+998-</span>
-                        <input type="tel" id="phoneInput" placeholder="123456789" maxlength="9" required>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="birthDateInput">Tug'ilgan sana</label>
-                    <input type="text" id="birthDateInput" placeholder="09-05-2005" maxlength="10" required>
-                </div>
-                
-                <button type="submit" class="login-btn-submit" id="loginSubmitBtn">
-                    <i class="fas fa-sign-in-alt"></i> Kirish
-                </button>
-            </form>
-        </div>
     </div>
 
     <div class="section">
@@ -1438,32 +1354,37 @@
         checkAuthStatus();
     </script>
     <script>
-function hideArizaAndMapForLoggedIn() {
-  const user = localStorage.getItem('avtoexclusive_user');
-  // Desktop menyu
-  const ariza = document.querySelector('nav a[href*="avtomaktab.html"]');
-  if (ariza) ariza.style.display = user ? 'none' : '';
-  const map = document.querySelector('nav a[href*="maps.app.goo.gl"]');
-  if (map) map.style.display = user ? 'none' : '';
-  // Mobil menyu
-  const mobileAriza = document.querySelector('.mobile-menu a[href*="avtomaktab.html"]');
-  if (mobileAriza) mobileAriza.style.display = user ? 'none' : '';
-  const mobileMap = document.querySelector('.mobile-menu a[href*="maps.app.goo.gl"]');
-  if (mobileMap) mobileMap.style.display = user ? 'none' : '';
-}
-function setActiveNavItem() {
-  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('.nav-item').forEach(item => {
-    const href = item.getAttribute('href');
-    if (href && href.indexOf(currentPage) !== -1) {
-      item.classList.add('active');
-    } else {
-      item.classList.remove('active');
-    }
-  });
-}
 document.addEventListener('DOMContentLoaded', function() {
-  hideArizaAndMapForLoggedIn();
+  // Check authentication status and hide navigation items for logged-in users
+  function checkAuthAndHideNav() {
+    const user = localStorage.getItem('avtoexclusive_user');
+    if (user) {
+      // Hide Application Submission and Map navigation items for logged-in users
+      const arizaNavItems = document.querySelectorAll('.nav-item[href="avtomaktab.html"]');
+      const mapNavItems = document.querySelectorAll('.nav-item[href*="maps.app.goo.gl"], .nav-item[href="map.html"]');
+      
+      arizaNavItems.forEach(item => {
+        item.style.display = 'none';
+      });
+      mapNavItems.forEach(item => {
+        item.style.display = 'none';
+      });
+    }
+  }
+  
+  function setActiveNavItem() {
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('.nav-item').forEach(item => {
+      const href = item.getAttribute('href');
+      if (href && href.indexOf(currentPage) !== -1) {
+        item.classList.add('active');
+      } else {
+        item.classList.remove('active');
+      }
+    });
+  }
+  
+  checkAuthAndHideNav();
   setActiveNavItem();
 });
     </script>

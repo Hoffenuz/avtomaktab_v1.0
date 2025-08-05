@@ -11,36 +11,158 @@
     <link rel="icon" type="image/webp" href="/rasm1.webp">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="auth.js"></script>
     <style>
+        /* Navigation Indicator Styles */
+        .nav-item {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        .nav-item.active::before {
+            width: 80%;
+        }
+
+        .nav-item:hover {
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active {
+            color: #ff6b6b !important;
+            font-weight: 600;
+        }
+
+        .nav-item.active:hover {
+            color: #ee5a24 !important;
+        }
+
+        /* Mobile navigation indicators */
+        .mobile-menu .nav-item {
+            position: relative;
+            padding: 15px 20px;
+            margin: 5px 0;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu .nav-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            border-radius: 0 2px 2px 0;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .mobile-menu .nav-item.active::before {
+            opacity: 1;
+        }
+
+        .mobile-menu .nav-item.active {
+            background: rgba(255, 107, 107, 0.1);
+            color: #ff6b6b !important;
+            font-weight: 600;
+        }
+
+        .mobile-menu .nav-item::after {
+            display: none;
+        }
+
+        /* Simplified Ariza Form Styles */
         .ariza-container {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 20px;
+            padding: 40px 0;
+            background: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .ariza-form {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: white;
             border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            padding: 50px 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e9ecef;
+            position: relative;
+            overflow: hidden;
+            max-width: 800px;
+            width: 100%;
+            margin: 0 20px;
+        }
+
+        .ariza-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(135deg,#1a237e 0%, #1976d2 100%);
         }
 
         .form-header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+        }
+
+        .header-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #1a237e 0%, #1976d2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 20px rgba(17, 35, 126, 0.3);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .header-icon i {
+            font-size: 2rem;
+            color: white;
         }
 
         .form-header h1 {
             color: #333;
             font-size: 2.5rem;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            font-weight: 700;
         }
 
         .form-header p {
             color: #666;
             font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
         }
 
         .form-group {
@@ -48,87 +170,123 @@
         }
 
         .form-group label {
-            display: block;
-            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
             color: #333;
             font-weight: 600;
             font-size: 1rem;
         }
 
+        .form-group label i {
+            color: #1a237e;
+            font-size: 0.9rem;
+        }
+
         .form-group input,
         .form-group textarea {
             width: 100%;
-            padding: 15px;
-            border: 2px solid #e1e5e9;
-            border-radius: 10px;
+            padding: 18px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
             font-size: 16px;
-            transition: border-color 0.3s ease;
+            transition: all 0.3s ease;
             box-sizing: border-box;
             font-family: inherit;
+            background: #fafafa;
         }
 
         .form-group input:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #1a237e;
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+            background: white;
+            transform: translateY(-2px);
         }
 
         .form-group textarea {
             resize: vertical;
             min-height: 120px;
+            line-height: 1.6;
         }
 
         .phone-input-container {
             display: flex;
             align-items: center;
-            border: 2px solid #e1e5e9;
-            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
             overflow: hidden;
             transition: all 0.3s ease;
+            background: #fafafa;
         }
 
         .phone-input-container:focus-within {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #1a237e;
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+            background: white;
+            transform: translateY(-2px);
         }
 
         .phone-prefix {
-            background: #f8f9fa;
-            padding: 15px 12px;
-            color: #666;
+            background: #1a237e;
+            padding: 18px 15px;
+            color: white;
             font-weight: 600;
-            border-right: 1px solid #e1e5e9;
+            border-right: 1px solid #e9ecef;
             font-size: 16px;
+            min-width: 60px;
+            text-align: center;
         }
 
         .phone-input-container input {
             border: none;
             border-radius: 0;
             flex: 1;
+            background: transparent;
         }
 
         .phone-input-container input:focus {
             box-shadow: none;
+            transform: none;
         }
 
         .submit-btn {
             width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;      
+            background: linear-gradient(135deg, #1a237e 0%, #1976d2 100%);
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 18px;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            margin-top: 20px;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
         }
 
         .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(255, 107, 107, 0.4);
         }
 
         .submit-btn:disabled {
@@ -137,24 +295,33 @@
             transform: none;
         }
 
+        .submit-btn .btn-text {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
         .success-message {
-            background: rgba(40, 167, 69, 0.1);
-            color: #28a745;
-            padding: 15px;
-            border-radius: 10px;
+            background: #d4edda;
+            color: #155724;
+            padding: 20px;
+            border-radius: 12px;
             margin: 20px 0;
             text-align: center;
             display: none;
+            border: 1px solid #c3e6cb;
         }
 
         .error-message {
-            background: rgba(220, 53, 69, 0.1);
-            color: #dc3545;
-            padding: 15px;
-            border-radius: 10px;
+            background: #f8d7da;
+            color: #721c24;
+            padding: 20px;
+            border-radius: 12px;
             margin: 20px 0;
             text-align: center;
             display: none;
+            border: 1px solid #f5c6cb;
         }
 
         .loading {
@@ -167,21 +334,52 @@
 
         .required-field::after {
             content: ' *';
-            color: #dc3545;
+            color: #1a237e;
         }
 
         @media (max-width: 768px) {
             .ariza-container {
-                margin: 20px auto;
-                padding: 10px;
+                padding: 20px 0;
             }
 
             .ariza-form {
                 padding: 30px 20px;
+                border-radius: 15px;
+                margin: 0 10px;
             }
 
             .form-header h1 {
                 font-size: 2rem;
+            }
+
+            .header-icon {
+                width: 60px;
+                height: 60px;
+            }
+
+            .header-icon i {
+                font-size: 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .form-group input,
+            .form-group textarea {
+                padding: 15px 18px;
+            }
+
+            .phone-prefix {
+                padding: 15px 12px;
+                font-size: 14px;
+                min-width: 50px;
+            }
+
+            .submit-btn {
+                padding: 18px;
+                font-size: 16px;
             }
         }
     </style>
@@ -194,9 +392,9 @@
         </div>
         <nav>
             <a href="index.html" class="nav-item">Bosh sahifa</a>
-            <a href="avtomaktab.html" class="nav-item active" id="arizaLink" style="display: block;">Ariza qoldirish</a>
+            <a href="avtomaktab.html" class="nav-item active">Ariza qoldirish</a>
             <a href="aloqa.html" class="nav-item">Aloqa</a>
-            <a href="admin.html" class="nav-item" id="adminLink" onclick="return window.authManager.requireLogin()">Ma'lumotlar</a>
+            <a href="admin.html" class="nav-item">Ma'lumotlar</a>
             <a href="darslik.html" class="nav-item">Darslik</a>
             <a href="https://maps.app.goo.gl/3vy3i4WX77W7WvLj7" class="nav-item">Xarita</a>
         </nav>
@@ -206,7 +404,7 @@
     <div class="mobile-menu">
         <button class="close-btn">✕</button>
         <a href="index.html" class="nav-item">Bosh sahifa</a>
-        <a href="avtomaktab.html" class="nav-item active" id="mobileArizaLink" style="display: block;">Ariza qoldirish</a>
+        <a href="avtomaktab.html" class="nav-item active">Ariza qoldirish</a>
         <a href="aloqa.html" class="nav-item">Aloqa</a>
         <a href="admin.html" class="nav-item">Ma'lumotlar</a>
         <a href="darslik.html" class="nav-item">Darslik</a>
@@ -216,41 +414,48 @@
     <div class="ariza-container">
         <div class="ariza-form">
             <div class="form-header">
+                <div class="header-icon">
+                    <i class="fas fa-car"></i>
+                </div>
                 <h1>Ariza qoldirish</h1>
-                <p>Avtomaktabga topshirish uchun arizangizni qoldiring, iltimos ortiqcha so'rovlar yubormang</p>
+                <p>Avtomaktabga topshirish uchun arizangizni qoldiring</p>
             </div>
 
             <form id="arizaForm">
-                <div class="form-group">
-                    <label for="fio" class="required-field">Ism va Familiya</label>
-                    <input type="text" id="fio" name="fio" placeholder="Umidov Umid" required>
-                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fio" class="required-field">
+                            <i class="fas fa-user"></i>
+                            Ism va Familiya
+                        </label>
+                        <input type="text" id="fio" name="fio" placeholder="Ism Familyangiz" required>
+                    </div>
 
-                <div class="form-group">
-                    <label for="phone" class="required-field">Telefon raqam</label>
-                    <div class="phone-input-container">
-                        <span class="phone-prefix">+998</span>
-                        <input type="tel" id="phone" name="phone" placeholder="901234567" maxlength="9" required>
+                    <div class="form-group">
+                        <label for="phone" class="required-field">
+                            <i class="fas fa-phone"></i>
+                            Telefon raqam
+                        </label>
+                        <div class="phone-input-container">
+                            <span class="phone-prefix">+998</span>
+                            <input type="tel" id="phone" name="phone" placeholder="901234567" maxlength="9" required>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="address" class="required-field">Manzil</label>
-                    <input type="text" id="address" name="address" placeholder="Xorazm viloyati, Qo'shko'pir tumani" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="birthDate" class="required-field">Tug'ilgan sana</label>
-                    <input type="text" id="birthDate" name="birthDate" placeholder="09-05-2005" maxlength="10" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="message">Qo'shimcha ma'lumot</label>
+                    <label for="message">
+                        <i class="fas fa-comment"></i>
+                        Qo'shimcha ma'lumot
+                    </label>
                     <textarea id="message" name="message" placeholder="O'zingiz haqida qo'shimcha ma'lumot, tajriba yoki savollaringiz..."></textarea>
                 </div>
 
                 <button type="submit" class="submit-btn" id="submitBtn">
-                    <span class="btn-text">Arizani yuborish</span>
+                    <span class="btn-text">
+                        <i class="fas fa-paper-plane"></i>
+                        Arizani yuborish
+                    </span>
                     <span class="loading">
                         <i class="fas fa-spinner fa-spin"></i> Yuborilmoqda...
                     </span>
@@ -319,20 +524,6 @@
             e.target.value = value;
         });
 
-        // Sana formatini avtomatik qo'shish
-        document.getElementById('birthDate').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            
-            if (value.length >= 2) {
-                value = value.substring(0, 2) + '-' + value.substring(2);
-            }
-            if (value.length >= 5) {
-                value = value.substring(0, 5) + '-' + value.substring(5, 9);
-            }
-            
-            e.target.value = value.substring(0, 10);
-        });
-
         // Ariza formasi
         document.getElementById('arizaForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -350,12 +541,10 @@
             // Forma ma'lumotlarini olish
             const fio = document.getElementById('fio').value.trim();
             const telefon = '+998' + document.getElementById('phone').value;
-            const manzil = document.getElementById('address').value.trim();
-            const tugilgan_sana = document.getElementById('birthDate').value.trim();
             const xabar = document.getElementById('message').value.trim();
             
             // Validatsiya
-            if (!fio || !telefon || !manzil || !tugilgan_sana) {
+            if (!fio || !telefon || telefon === '+998') {
                 errorMessage.querySelector('p').textContent = 'Iltimos, barcha majburiy maydonlarni to\'ldiring.';
                 errorMessage.style.display = 'block';
                 return;
@@ -373,16 +562,14 @@
                     .insert([{
                         ism: fio,
                         telefon,
-                        xabar,
-                        manzil,
-                        tugilgan_sana
+                        xabar: xabar || 'Qo\'shimcha ma\'lumot yo\'q'
                     }]);
                 if (error) throw error;
                 // Muvaffaqiyatli xabar
                 successMessage.style.display = 'block';
                 document.getElementById('arizaForm').reset();
                 setTimeout(() => { successMessage.style.display = 'none'; }, 3000);
-                showModalMessage('Xabaringiz yuborildi, tez orada admin siz bilan bog\'lanadi!');
+                showModalMessage('Arizangiz muvaffaqiyatli yuborildi! Tez orada siz bilan bog\'lanamiz.');
             } catch (error) {
                 console.error('Ariza yuborish xatosi:', error);
                 errorMessage.querySelector('p').textContent = 'Xatolik yuz berdi. Iltimos, qaytadan urinib ko\'ring.';
@@ -393,20 +580,6 @@
                 loading.classList.remove('show');
             }
         });
-
-        // Login statusni tekshirish va menyuni boshqarish
-        function hideArizaAndMapForLoggedIn() {
-          const user = localStorage.getItem('avtoexclusive_user');
-          // Desktop menyu
-          document.getElementById('arizaLink').style.display = user ? 'none' : 'block';
-          const mapLink = document.querySelector('nav a[href*="maps.app.goo.gl"]');
-          if (mapLink) mapLink.style.display = user ? 'none' : 'block';
-          // Mobil menyu
-          const mobileAriza = document.getElementById('mobileArizaLink');
-          if (mobileAriza) mobileAriza.style.display = user ? 'none' : 'block';
-          const mobileMap = document.querySelector('.mobile-menu a[href*="maps.app.goo.gl"]');
-          if (mobileMap) mobileMap.style.display = user ? 'none' : 'block';
-        }
 
         // Qaysi bo'limda turganini ko'rsatish (active nav-item)
         function setActiveNavItem() {
@@ -422,7 +595,6 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-          hideArizaAndMapForLoggedIn();
           setActiveNavItem();
         });
     </script>
