@@ -1418,7 +1418,7 @@
                 
                 <div class="form-group">
                     <label for="birthDateInput">Tug'ilgan sana</label>
-                    <input type="text" id="birthDateInput" placeholder="09-05-2005" maxlength="10" required>
+                    <input type="text" id="birthDateInput" placeholder="01/05/2005" maxlength="10" required>
                 </div>
                 
                 <button type="submit" class="login-btn-submit" id="loginSubmitBtn">
@@ -1609,10 +1609,10 @@
 
         // Utility functions
         function formatToISO(dateStr) {
-            // Convert from mm-dd-yyyy to YYYY-MM-DD for database
+            // Convert from dd/mm/yyyy or dd-mm-yyyy to YYYY-MM-DD for database
             const cleanDate = dateStr.replace(/\D/g, '');
-            const month = cleanDate.substring(0, 2);
-            const day = cleanDate.substring(2, 4);
+            const day = cleanDate.substring(0, 2);
+            const month = cleanDate.substring(2, 4);
             const year = cleanDate.substring(4, 8);
             return `${year}-${month}-${day}`;
         }
@@ -1946,10 +1946,10 @@
                 return;
             }
             
-            // Validate date format (with or without dashes)
+            // Validate date format (with or without slashes/dashes)
             const dateDigits = birthDate.replace(/\D/g, '');
             if (dateDigits.length !== 8) {
-                showMessage('errorMessage', 'Sana 8 ta raqamdan iborat bo\'lishi kerak (mm-dd-yyyy formatida)', true);
+                showMessage('errorMessage', 'Sana 8 ta raqamdan iborat bo\'lishi kerak (dd/mm/yyyy formatida)', true);
                 return;
             }
             
@@ -1959,7 +1959,7 @@
             const year = parseInt(dateDigits.substring(4, 8));
             
             if (day < 1 || day > 31 || month < 1 || month > 12 || year < 1900 || year > 2010) {
-                showMessage('errorMessage', 'Noto\'g\'ri sana formati. Iltimos mm-dd-yyyy formatida kiriting', true);
+                showMessage('errorMessage', 'Noto\'g\'ri sana formati. Iltimos dd/mm/yyyy formatida kiriting', true);
                 return;
             }
             
@@ -2114,48 +2114,44 @@
             e.target.value = value;
         });
 
-        // Date input formatting (with dashes)
+        // Date input formatting (with slashes)
         birthDateInput.addEventListener('input', (e) => {
             let value = e.target.value.replace(/\D/g, '');
             if (value.length > 8) {
                 value = value.substring(0, 8);
             }
-            
-            // Add dashes automatically while typing
+            // Add slashes automatically while typing - DD/MM/YYYY format
             if (value.length >= 2 && value.length < 4) {
-                value = value.substring(0, 2) + '-' + value.substring(2);
+                value = value.substring(0, 2) + '/' + value.substring(2);
             } else if (value.length >= 4) {
-                value = value.substring(0, 2) + '-' + value.substring(2, 4) + '-' + value.substring(4);
+                value = value.substring(0, 2) + '/' + value.substring(2, 4) + '/' + value.substring(4);
             }
-            
             e.target.value = value;
         });
 
-        // Format date with dashes when user finishes typing
+        // Format date with slashes when user finishes typing
         birthDateInput.addEventListener('blur', (e) => {
             const value = e.target.value.replace(/\D/g, '');
             if (value.length === 8) {
                 const day = value.substring(0, 2);
                 const month = value.substring(2, 4);
                 const year = value.substring(4, 8);
-                e.target.value = `${day}-${month}-${year}`;
+                e.target.value = `${day}/${month}/${year}`;
             }
         });
 
-        // Format date while typing (add dashes automatically) - MM-DD-YYYY format
+        // Format date while typing (add slashes automatically) - DD/MM/YYYY format
         birthDateInput.addEventListener('input', (e) => {
             let value = e.target.value.replace(/\D/g, '');
             if (value.length > 8) {
                 value = value.substring(0, 8);
             }
-            
-            // Add dashes automatically while typing - MM-DD-YYYY format
+            // Add slashes automatically while typing - DD/MM/YYYY format
             if (value.length >= 2 && value.length < 4) {
-                value = value.substring(0, 2) + '-' + value.substring(2);
+                value = value.substring(0, 2) + '/' + value.substring(2);
             } else if (value.length >= 4) {
-                value = value.substring(0, 2) + '-' + value.substring(2, 4) + '-' + value.substring(4);
+                value = value.substring(0, 2) + '/' + value.substring(2, 4) + '/' + value.substring(4);
             }
-            
             e.target.value = value;
         });
 
